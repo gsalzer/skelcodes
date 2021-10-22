@@ -14,19 +14,19 @@ deployment of the first contract with the same skeleton as the bytecode.
 Bytecodes in a particular directory will not contain instructions introduced
 only in a later fork.
 
-| block id | fork name |
-| -------- | --------- |
-|        0 | Frontier |
-|   200000 | Ice Age |
-|  1150000 | Homestead |
-|  1920000 | DAO Fork |
-|  2463000 | Tangerine Whistle |
-|  2675000 | Spurious Dragon |
-|  4370000 | Byzantium |
-|  7280000 | Constantinople / St.Petersburg |
-|  9069000 | Istanbul |
-|  9200000 | Muir Glacier |
-| 12965000 | London |
+| block id | fork name | #contracts |
+| -------- | --------- | ---------- |
+|        0 | Frontier | 460 |
+|   200000 | Ice Age | 2614 |
+|  1150000 | Homestead | 2522 |
+|  1920000 | DAO Fork | 1546 |
+|  2463000 | Tangerine Whistle | 495 |
+|  2675000 | Spurious Dragon | 11971 |
+|  4370000 | Byzantium | 66529 |
+|  7280000 | Constantinople / St.Petersburg | 26042 |
+|  9069000 | Istanbul | 2239 |
+|  9200000 | Muir Glacier | 96929 |
+| 12965000 | London | 14753 |
 
 The file `info.csv` contains supplementary data for each bytecode (see the next section for details).
 The scripts `database2csv.sql` and `csv2files.bash` document the extraction process.
