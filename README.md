@@ -18,15 +18,15 @@ only in a later fork.
 | -------- | --------- | ---------- | ----------- |
 |        0 | Frontier | 460 | |
 |   200000 | Ice Age | 2614 | |
-|  1150000 | Homestead | 2522 | DELEGATECALL |
+|  1150000 | Homestead | 2522 | 0xf4 DELEGATECALL |
 |  1920000 | DAO Fork | 1546 | |
 |  2463000 | Tangerine Whistle | 495 | |
 |  2675000 | Spurious Dragon | 11971 | |
-|  4370000 | Byzantium | 66529 | RETURNDATASIZE, RETURNDATACOPY, STATICCALL, REVERT |
-|  7280000 | Constantinople / St.Petersburg | 26042 | SHL, SAR, SHA3, EXTCODEHASH, CREATE2 |
-|  9069000 | Istanbul | 2239 | CHAINID, SELFBALANCE |
+|  4370000 | Byzantium | 66529 | 0x3d RETURNDATASIZE, 0x3e RETURNDATACOPY, 0xfa STATICCALL, 0xfd REVERT |
+|  7280000 | Constantinople / St.Petersburg | 26042 | 0x1b SHL, 0x1c SHR, 0x1d SAR, 0x3f EXTCODEHASH, 0xf5 CREATE2 |
+|  9069000 | Istanbul | 2239 | 0x46 CHAINID, 0x47 SELFBALANCE |
 |  9200000 | Muir Glacier | 96929 | |
-| 12965000 | London | 14753 | BASEFEE |
+| 12965000 | London | 14753 | 0x48 BASEFEE |
 
 The file `info.csv` contains supplementary data for each bytecode (see the next section for details).
 The scripts `database2csv.sql` and `csv2files.bash` document the extraction process.
