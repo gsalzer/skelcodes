@@ -1,7 +1,8 @@
 #!/bin/bash
 
-while IFS=, read -r fork address code
+while IFS=, read -r bid address code
 do
-	mkdir -p "$fork"
-	echo "$code" | sed 's/0x//' > "$fork/$address.hex"
+	dir="$(($bid/1000000))xxxxxx"
+	mkdir -p "$dir"
+	echo "$code" | sed 's/0x//' > "$dir/$bid-$address.hex"
 done < codes.csv

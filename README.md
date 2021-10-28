@@ -2,42 +2,49 @@
 
 This repository contains the runtime code of contracts (self-destructed or not)
 from the Ethereum main chain (deployed up to but not including block
-13,340,000), one for each type of skeleton. By the way of selection, this
-collection of 226,100 bytecodes is representative of all deployed contracts
-(roughly 40 millions).
+13,350,000), one for each type of skeleton. By the way of selection, this
+collection of 229,951 bytecodes is representative of 42,818,283 contracts
+with 481,790 distinct runtime codes.
 
 ## Contents of the repository
 
-The directories are named by the block numbers of hard forks. A bytecode is
-stored in the directory corresponding to the latest fork preceding the
-deployment of the first contract with the same skeleton as the bytecode.
-Bytecodes in a particular directory will not contain instructions introduced
-only in a later fork.
+The codes are labeled `blockid-address.hex`. `address` is one of the addresses,
+where the code has been deployed on Ethereum's main chain, `blockid` is the
+corresponding block.  Note that the address by itself is not enough to identify
+the codes uniquely.  Because of `CREATE2`, there are cases where different
+codes have been deployed at the same address.
 
-| block id | fork name | #contracts | new opcodes |
-| -------- | --------- | ---------- | ----------- |
-|        0 | Frontier | 460 | |
-|   200000 | Ice Age | 2614 | |
-|  1150000 | Homestead | 2522 | 0xf4 DELEGATECALL |
-|  1920000 | DAO Fork | 1546 | |
-|  2463000 | Tangerine Whistle | 495 | |
-|  2675000 | Spurious Dragon | 11971 | |
-|  4370000 | Byzantium | 66529 | 0x3d RETURNDATASIZE, 0x3e RETURNDATACOPY, 0xfa STATICCALL, 0xfd REVERT |
-|  7280000 | Constantinople / St.Petersburg | 26042 | 0x1b SHL, 0x1c SHR, 0x1d SAR, 0x3f EXTCODEHASH, 0xf5 CREATE2 |
-|  9069000 | Istanbul | 2239 | 0x46 CHAINID, 0x47 SELFBALANCE |
-|  9200000 | Muir Glacier | 96929 | |
-| 12965000 | London | 14753 | 0x48 BASEFEE |
+The codes are divided up into directories, where each directory covers the
+range of 1,000,000 blocks.
+
+| directory | #contracts |
+| --------- | ---------- |
+|  0xxxxxx  |     2,542  |
+|  1xxxxxx  |     3,305  |
+|  2xxxxxx  |     2,572  |
+|  3xxxxxx  |     4,018  |
+|  4xxxxxx  |    17,752  |
+|  5xxxxxx  |    26,510  |
+|  6xxxxxx  |    23,590  |
+|  7xxxxxx  |    15,864  |
+|  8xxxxxx  |    14,514  |
+|  9xxxxxx  |    16,289  |
+| 10xxxxxx  |    21,954  |
+| 11xxxxxx  |    34,045  |
+| 12xxxxxx  |    29,426  |
+| 13xxxxxx  |    17,570  |
+| --------- | ---------- |
+|           |   229,951  |
 
 The file `info.csv` contains supplementary data for each bytecode (see the next section for details).
 The scripts `database2csv.sql` and `csv2files.bash` document the extraction process.
 
 ## How the bytecodes were selected and stored
 
-1. We collected all bytecodes that resulted from a successful `CREATE`
-   operation, except for the empty bytecode.
+1. We collected all bytecodes that resulted from a successful `CREATE`/`CREATE2`
+   instruction, except for the empty bytecode.
 
-2. For each bytecode, we compute its skeleton. Several bytecodes may have the
-   same skeleton. See
+2. For each bytecode, we compute its skeleton, see
    [https://github.com/gsalzer/ethutils](https://github.com/gsalzer/ethutils/tree/main/doc/skeleton)
    for information on skeletons.
 
@@ -45,7 +52,7 @@ The scripts `database2csv.sql` and `csv2files.bash` document the extraction proc
    with the same skeleton, and each bytecode may have been deployed at several
    addresses. In each group, we select one bytecode and one deployment address
    according to the following criteria, with priority decreasing from top to bottom.
-    - We prefer addresses, where the contract has not yet self-destructed (until block 13,400,000).
+    - We prefer addresses, where the contract has not yet self-destructed.
     - We prefer addresses, where [Etherscan](https://etherscan.io) provides verified source code.
     - We prefer addresses of earlier deployments.
 
@@ -58,12 +65,4 @@ In the end, we obtain the following data for each skeleton:
    - the *number of different bytecodes* possessing this skeleton
    - the *number of deployments* of contracts with this skeleton
 This data can be found in the file `info.csv`.
-
-4. We store the bytecode in the directory corresponding to the latest fork
-   before the first deployment, using its deployment address as file name. This
-means: If the number of the first block, where a contract with the same
-skeleton as the bytecode was deployed, is `N`, and if `F` is the largest fork
-number smaller or equal to `N`, and if `A` is one of the deployment addresses of
-the bytecode (selected as described above), then the bytecode is stored in the file
-`F/0xA.hex`.
 

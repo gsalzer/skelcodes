@@ -4,7 +4,7 @@
 -- we prefer deployments where the code hasn't yet self-destructed
 -- and among these, those with a verified source on etherscan.io.
 -- We do not consider codes with skeleton 0 (= empty string),
--- resulting e.g. from mayflies.
+-- resulting e.g. from self-destructing deployment code.
 --
 -- cdate: block-id/tx-id/msg-id of message creating the contract
 -- aid: internal account id
@@ -17,36 +17,49 @@
 create materialized view skelcode as (
 with ranked as (
          select
-                cdate,
-                aid,
-                code,
-                skeleton,
+                contract2.cdate,
+                contract2.aid,
+                code2.code,
+                code2.skeleton,
                 row_number() OVER (
-                        PARTITION BY skeleton
-                        ORDER BY (death is null) DESC, (sol is null) ASC, (cdate).bid ASC
+                        PARTITION BY code2.skeleton
+                        ORDER BY
+				(contract2.death is null) DESC,
+				(es.sol is null) ASC,
+			       	(contract2.cdate).bid ASC
                 ) rank
         from
                 contract2
-                join code2 on code=cdeployed
-                natural left join esverifiedcontract
+                join code2 on code2.code = contract2.cdeployed
+                left join esverifiedcontract es on es.aid = contract2.aid
         where
-                skeleton <> 0
-                and (cdate).bid < 13400000
+                code2.skeleton <> 0
+                and (contract2.cdate).bid < 13500000
 ),
 top as (
         select cdate,aid,code,skeleton from ranked where rank=1
 )
-select top.cdate, top.aid, top.code, top.skeleton, msg_time_mins(contract2.cdate) "first", msg_time_maxs(contract2.cdate) "last", count(distinct cdeployed) codes, count(*) contracts
+select
+	top.cdate,
+	top.aid,
+	top.code,
+	top.skeleton,
+	msg_time_mins(contract2.cdate) "first",
+       	msg_time_maxs(contract2.cdate) "last",
+       	count(distinct contract2.cdeployed) codes,
+       	count(*) contracts
 from
         top
        	join code2 on code2.skeleton=top.skeleton
        	join contract2 on contract2.cdeployed=code2.code
 group by top.cdate, top.aid, top.code, top.skeleton
-order by "first"
+order by top.cdate
 );
--- 226148
-create index skelcodes_cdate_index on skelcodes(cdate);
+-- 229951
+-- check possible combination of fields as key
+-- create unique index skelcodes_aid_index on skelcode(aid); -- fails
+create unique index skelcodes_bid_aid_index on skelcode(((cdate).bid),aid); -- succeed
 
-\copy (select fork.bid fork,account(aid),bindata(code) code from skelcodes join fork on ("first").bid between fork.bid and fork.lastbid) to 'codes.csv' with csv;
+\copy (select (cdate).bid,account(aid),bindata(code) code from skelcode) to 'codes.csv' with csv;
 
-\copy (select (cdate).bid block, (cdate).tid tx, (cdate).mid msg, account(aid) address, ("first").bid "first", ("last").bid "last", codes, contracts from skelcodes order by cdate) to 'info.csv' with csv header;
+\copy (select (cdate).bid block, (cdate).tid tx, (cdate).mid msg, account(aid) address, ("first").bid "first", ("last").bid "last", codes, contracts from skelcode order by cdate) to 'info.csv' with csv header;
