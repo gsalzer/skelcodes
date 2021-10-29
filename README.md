@@ -57,13 +57,15 @@ Any other client should yield the same result.)
    addresses. In each group, we select one bytecode and one deployment address
    according to the following criteria, with priority decreasing from top to bottom.
 
-    - We prefer addresses, where the contract has not yet self-destructed.
+    - We prefer addresses, where the contract has not self-destructed until block 13,500,000.
     - We prefer addresses, where [Etherscan](https://etherscan.io) provides verified source code.
     - We prefer addresses of earlier deployments.
 
-   The first two criteria ensure that we pick a deployment address where we find more information
-   on Etherscan, if available. (Etherscan removes the information once a contract
-   self-destructs.)
+   The first two criteria prefer deployment addresses where
+[Etherscan](https://etherscan.io) provides more information. Note, however,
+that the criteria refer to moving targets: Contracts keep self-destructing,
+Etherscan removes information on self-destructed contracts, and new source
+codes are uploaded every day.
 
 ## Supplementary data
 
