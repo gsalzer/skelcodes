@@ -38,13 +38,15 @@ range of 1,000,000 blocks.
 The file `info.csv` contains supplementary data for each bytecode (see the next
 section for details).  The scripts `database2csv.sql` and `csv2files.bash`
 document the extraction process. They are not overly useful if you don't have
-access to the database they are referring to.
+access to the database they refer to.
 
 ## Selection of bytecodes
 
 1. We collect all bytecodes that resulted from a successful `CREATE`/`CREATE2`
    instruction or transaction, except for the empty bytecode. The latter is
-mainly the result of self-destructing deployment code.
+mainly the result of self-destructing deployment code. (For the record, we use
+the Ethereum client [OpenEthereum](https://github.com/openethereum/openethereum).
+Any other client should yield the same result.)
 
 2. For each bytecode, we compute its skeleton, see
    [https://github.com/gsalzer/ethutils](https://github.com/gsalzer/ethutils/tree/main/doc/skeleton)
@@ -86,6 +88,6 @@ tells that the bytecode
 at the address `0x740f1a77a43ea4e26ffc30d1ef92358f5a221406`. The contracts with
 the same skeleton as this bytecode were deployed between the
 blocks `8533807` and `13229753`. In total, there are `20` different bytecodes
-and `12212167` deployments. Further information can be found on
-[https://etherscan.io/address/0x740f1a77a43ea4e26ffc30d1ef92358f5a221406](https://etherscan.io/address/0x740f1a77a43ea4e26ffc30d1ef92358f5a221406).
+and `12212167` deployments. Further information on this bytecode can be found at
+`https://etherscan.io/address/0x740f1a77a43ea4e26ffc30d1ef92358f5a221406`.
 
