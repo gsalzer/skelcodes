@@ -1,23 +1,23 @@
 # SkelCodes
 
-This repository contains the runtime code of contracts (self-destructed or not)
-from the Ethereum main chain (deployed up to but not including block
-13,350,000), one for each type of skeleton. By the way of selection, this
-collection of 229,951 bytecodes is representative of 42,818,283 contracts
-with 481,790 distinct runtime codes.
+This repository contains the runtime code of contracts, self-destructed or not,
+from the Ethereum main chain, *one for each type of skeleton*. By the way of
+selection, this collection of **229,951** bytecodes faithfully represents, in
+most respects, the 42,818,283 contracts successfully deployed up to (but not
+including) block **13,500,000** (see below for details).
 
 ## Contents of the repository
 
 The codes are labeled `blockid-address.hex`. `address` is one of the addresses,
 where the code has been deployed on Ethereum's main chain, `blockid` is the
-corresponding block.  Note that the address by itself is not enough to identify
+block of creation.  Note that the address by itself is not enough to identify
 the codes uniquely.  Because of `CREATE2`, there are cases where different
 codes have been deployed at the same address.
 
-The codes are divided up into directories, where each directory covers the
+The codes are divided up into directories, with each directory covering the
 range of 1,000,000 blocks.
 
-| directory | #contracts |
+| directory |    #codes  |
 | --------- | ---------- |
 |  0xxxxxx  |     2,542  |
 |  1xxxxxx  |     3,305  |
@@ -33,36 +33,53 @@ range of 1,000,000 blocks.
 | 11xxxxxx  |    34,045  |
 | 12xxxxxx  |    29,426  |
 | 13xxxxxx  |    17,570  |
-| --------- | ---------- |
-|           |   229,951  |
+| total     |   229,951  |
 
-The file `info.csv` contains supplementary data for each bytecode (see the next section for details).
-The scripts `database2csv.sql` and `csv2files.bash` document the extraction process.
+The file `info.csv` contains supplementary data for each bytecode (see the next
+section for details).  The scripts `database2csv.sql` and `csv2files.bash`
+document the extraction process.
 
-## How the bytecodes were selected and stored
+## How the bytecodes are selected
 
-1. We collected all bytecodes that resulted from a successful `CREATE`/`CREATE2`
-   instruction, except for the empty bytecode.
+1. We collect all bytecodes that resulted from a successful `CREATE`/`CREATE2`
+   instruction or transaction, except for the empty bytecode. The latter is
+mainly the result of self-destructing deployment code.
 
 2. For each bytecode, we compute its skeleton, see
    [https://github.com/gsalzer/ethutils](https://github.com/gsalzer/ethutils/tree/main/doc/skeleton)
-   for information on skeletons.
+   for more information and scripts.
 
-3. We group the bytecodes by skeleton. Note that there may be several bytecodes
+3. We group the bytecodes by skeleton. There may be several bytecodes
    with the same skeleton, and each bytecode may have been deployed at several
    addresses. In each group, we select one bytecode and one deployment address
    according to the following criteria, with priority decreasing from top to bottom.
     - We prefer addresses, where the contract has not yet self-destructed.
     - We prefer addresses, where [Etherscan](https://etherscan.io) provides verified source code.
     - We prefer addresses of earlier deployments.
+   The first two criteria ensure that we pick a deployment address where we find more information
+on Etherscan, if available. (Etherscan removes the information once the contract
+self-destructs.)
 
-In the end, we obtain the following data for each skeleton:
-   - one *address* from the Ethereum main chain
-   - the *bytecode* deployed at this address, which possesses this skeleton
-   - the *block, transaction, and message id* where the deployment took place (uniquely identifying the deployment)
-   - the *number of the first block*, where a contract with this skeleton was deployed
-   - the *number of the last block*, where a contract with this skeleton was deployed
-   - the *number of different bytecodes* possessing this skeleton
-   - the *number of deployments* of contracts with this skeleton
-This data can be found in the file `info.csv`.
+The file `info.csv` contains the following supplementary data for each bytecode
+in the repository:
+   - the *block, transaction, and message id* where the deployment took place
+     (uniquely identifying the deployment)
+   - the deployment *address* on Ethereum's main chain
+   - the *first block*, where a contract with the same skeleton was deployed
+   - the *last block*, where a contract with the same skeleton was deployed
+   - the *number of different bytecodes* with the same skeleton
+   - the *number of deployments* of contracts with the same skeleton
+
+ As an example, the line
+```
+10861487,142,3,0x740f1a77a43ea4e26ffc30d1ef92358f5a221406,8533807,13229753,20,12212167
+```
+tells that the bytecode
+`10861487-0x740f1a77a43ea4e26ffc30d1ef92358f5a221406.hex` in directory
+`10xxxxxx` was deployed by message `3` of transaction `142` in block `10861487`
+at the address `0x740f1a77a43ea4e26ffc30d1ef92358f5a221406`. The contracts with
+a skeleton identical to the skeleton of this bytecode were deployed between the
+blocks `8533807` and `13229753`. In total, there are `20` different bytecodes
+and `12212167` deployments. Further information can be found on
+[https://etherscan.io/address/0x740f1a77a43ea4e26ffc30d1ef92358f5a221406](https://etherscan.io/address/0x740f1a77a43ea4e26ffc30d1ef92358f5a221406).
 
