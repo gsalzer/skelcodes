@@ -79,9 +79,9 @@ in the repository:
    - the *last block*, where a contract with the same skeleton was deployed
    - the *number of different bytecodes* with the same skeleton
    - the *number of deployments* of contracts with the same skeleton
-   - the length of the bytecode
-   - the length of the first code segment of the bytecode (that will be analyzed)
-   - the number of entry points
+   - the *length of the bytecode*
+   - the *length of the first code segment* of the bytecode
+   - the *number of entry points* (contract methods)
 
  As an example, the line
 ```
