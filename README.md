@@ -45,8 +45,7 @@ access to the database they refer to.
 1. We collect all bytecodes that resulted from a successful `CREATE`/`CREATE2`
    instruction or transaction, except for the empty bytecode. The latter is
 mainly the result of self-destructing deployment code. (For the record, we use
-the Ethereum client [OpenEthereum](https://github.com/openethereum/openethereum).
-Any other client should yield the same result.)
+the Ethereum client [OpenEthereum](https://github.com/openethereum/openethereum).)
 
 2. For each bytecode, we compute its skeleton, see
    [https://github.com/gsalzer/ethutils](https://github.com/gsalzer/ethutils/tree/main/doc/skeleton)
@@ -72,6 +71,7 @@ codes are uploaded every day.
 The file `info.csv` contains the following supplementary data for each bytecode
 in the repository:
 
+   - the *filename*
    - the *block number*, *transaction id*, and *message id* where the deployment took place
      (uniquely identifying the deployment)
    - the deployment *address* on Ethereum's main chain
@@ -79,17 +79,22 @@ in the repository:
    - the *last block*, where a contract with the same skeleton was deployed
    - the *number of different bytecodes* with the same skeleton
    - the *number of deployments* of contracts with the same skeleton
+   - the length of the bytecode
+   - the length of the first code segment of the bytecode (that will be analyzed)
+   - the number of entry points
 
  As an example, the line
 ```
-10861487,142,3,0x740f1a77a43ea4e26ffc30d1ef92358f5a221406,8533807,13229753,20,12212167
+10018484-0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8.hex,10018484,181,0,0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8,10018484,10785507,3,5,235,182,3
 ```
-tells that the bytecode
-`10861487-0x740f1a77a43ea4e26ffc30d1ef92358f5a221406.hex` in directory
-`10xxxxxx` was deployed by message `3` of transaction `142` in block `10861487`
-at the address `0x740f1a77a43ea4e26ffc30d1ef92358f5a221406`. The contracts with
+tells that the bytecode in file
+`10018484-0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8.hex` (directory
+`10xxxxxx`) was deployed by message `0` of transaction `181` in block `10018484`
+at the address `0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8`. The contracts with
 the same skeleton as this bytecode were deployed between the
-blocks `8533807` and `13229753`. In total, there are `20` different bytecodes
-and `12212167` deployments. Further information on this bytecode can be found at
-`https://etherscan.io/address/0x740f1a77a43ea4e26ffc30d1ef92358f5a221406`.
-
+blocks `10018484` and `10785507`. In total, there are `3` different bytecodes
+and `5` deployments. Further information on this bytecode can be found at
+`https://etherscan.io/address/0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8`.
+The last three columns roughly indicate the complexity of the bytecode:
+Its total length is `235` bytes, whereas the length of the first code segment (the part that is actually executed) consists of just `182` bytes.
+The code implements `3` methods (functions in Solidity).

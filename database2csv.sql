@@ -44,22 +44,26 @@ select
 	top.aid,
 	top.code,
 	top.skeleton,
+	ct.len_code,
+	ct.len_code1,
+	array_length(ct.signatures,1) len_sigs,
 	msg_time_mins(contract2.cdate) "first",
        	msg_time_maxs(contract2.cdate) "last",
        	count(distinct contract2.cdeployed) codes,
        	count(*) contracts
 from
         top
-       	join code2 on code2.skeleton=top.skeleton
-       	join contract2 on contract2.cdeployed=code2.code
-group by top.cdate, top.aid, top.code, top.skeleton
+       	join code2 c on c.skeleton=top.skeleton
+       	join contract2 on contract2.cdeployed=c.code
+	join code2 ct on ct.code=top.code
+group by top.cdate, top.aid, top.code, top.skeleton, ct.len_code, ct.len_code1, len_sigs
 order by top.cdate
 );
 -- 229951
 -- check possible combination of fields as key
 -- create unique index skelcodes_aid_index on skelcode(aid); -- fails
-create unique index skelcodes_bid_aid_index on skelcode(((cdate).bid),aid); -- succeed
+create unique index skelcodes_bid_aid_index on skelcode(((cdate).bid),aid); -- succeeds
 
 \copy (select (cdate).bid,account(aid),bindata(code) code from skelcode) to 'codes.csv' with csv;
 
-\copy (select (cdate).bid block, (cdate).tid tx, (cdate).mid msg, account(aid) address, ("first").bid "first", ("last").bid "last", codes, contracts from skelcode order by cdate) to 'info.csv' with csv header;
+\copy (select concat((cdate).bid,'-',account(aid),'.hex') filename,(cdate).bid block, (cdate).tid tx, (cdate).mid msg, account(aid) address, ("first").bid "first", ("last").bid "last", codes, contracts, len_code, len_code1, len_sigs from skelcode order by filename) to 'info.csv' with csv header;
