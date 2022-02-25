@@ -56,7 +56,7 @@ the Ethereum client [OpenEthereum](https://github.com/openethereum/openethereum)
    addresses. In each group, we select one bytecode and one deployment address
    according to the following criteria, with priority decreasing from top to bottom.
 
-    - We prefer addresses, where the contract has not self-destructed until block 13,500,000.
+    - We prefer addresses, where the contract has not self-destructed until block 14,000,000.
     - We prefer addresses, where [Etherscan](https://etherscan.io) provides verified source code.
     - We prefer addresses of earlier deployments.
 
