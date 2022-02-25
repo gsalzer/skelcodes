@@ -5,6 +5,10 @@
 -- and among these, those with a verified source on etherscan.io.
 -- We do not consider codes with skeleton 0 (= empty string),
 -- resulting e.g. from self-destructing deployment code.
+-- This selection strategy is not reproducible, as new sources
+-- arrive and contracts self-destruct. Moreover, the skelcodes
+-- were initially retrieved for the block range 0-13499999,
+-- and later were conservatively extended for 13500000-13999999.
 --
 -- cdate: block-id/tx-id/msg-id of message creating the contract
 -- aid: internal account id
@@ -14,7 +18,7 @@
 -- last: block-id/tx-id/msg-id of last deployed contract with this skeleton
 -- codes: number of different codes with this skeleton
 -- contracts: total number of deployed contracts with this skeleton
-create materialized view skelcode as (
+create table skelcode as 
 with ranked as (
          select
                 contract2.cdate,
@@ -34,7 +38,7 @@ with ranked as (
                 left join esverifiedcontract es on es.aid = contract2.aid
         where
                 code2.skeleton <> 0
-                and (contract2.cdate).bid < 13500000
+                and (contract2.cdate).bid < 14000000
 ),
 top as (
         select cdate,aid,code,skeleton from ranked where rank=1
@@ -57,12 +61,12 @@ from
        	join contract2 on contract2.cdeployed=c.code
 	join code2 ct on ct.code=top.code
 group by top.cdate, top.aid, top.code, top.skeleton, ct.len_code, ct.len_code1, len_sigs
-order by top.cdate
-);
--- 229951
+order by top.cdate;
+-- 248328
 -- check possible combination of fields as key
 -- create unique index skelcodes_aid_index on skelcode(aid); -- fails
-create unique index skelcodes_bid_aid_index on skelcode(((cdate).bid),aid); -- succeeds
+create unique index skelcode_bid_aid_index on skelcode(((cdate).bid),aid); -- succeeds
+create unique index skelcode_skeleton on skelcode(skeleton);
 
 \copy (select (cdate).bid,account(aid),bindata(code) code from skelcode) to 'codes.csv' with csv;
 

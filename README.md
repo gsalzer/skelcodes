@@ -2,9 +2,9 @@
 
 This repository contains the runtime code of contracts, self-destructed or not,
 from Ethereum's main chain, *one for each type of skeleton*. By the way of
-selection, this collection of **229,951** bytecodes faithfully represents, in
-most respects, the 42,818,283 contracts successfully deployed up to
-block **13,500,000** (see below for details of the selection process).
+selection, this collection of **248,328** bytecodes faithfully represents, in
+most respects, the **45 million** contracts successfully deployed up to
+block **14,000,000** (see below for details of the selection process).
 
 ## Contents of the repository
 
@@ -32,11 +32,11 @@ range of 1,000,000 blocks.
 | 10xxxxxx  |    21,954  |
 | 11xxxxxx  |    34,045  |
 | 12xxxxxx  |    29,426  |
-| 13xxxxxx  |    17,570  |
-| total     |   229,951  |
+| 13xxxxxx  |    35,947  |
+| total     |   248,328  |
 
-The file `info.csv` contains supplementary data for each bytecode (see the next
-section for details).  The scripts `database2csv.sql` and `csv2files.bash`
+The file `info.csv` contains supplementary data for each bytecode (see below
+for details).  The scripts `database2csv.sql` and `csv2files.bash`
 document the extraction process. They are not overly useful if you don't have
 access to the database they refer to.
 
@@ -63,8 +63,10 @@ the Ethereum client [OpenEthereum](https://github.com/openethereum/openethereum)
    The first two criteria prefer deployment addresses where
 [Etherscan](https://etherscan.io) provides more information. Note, however,
 that the criteria refer to moving targets: Contracts keep self-destructing,
-Etherscan removes information on self-destructed contracts, and new source
-codes are uploaded every day.
+Etherscan removes the source code for self-destructed contracts, and new source
+codes are uploaded every day. Moreover, we extended the initial selection of
+codes up to block 13,500,000 later conservatively by the codes newly deployed
+up to block 14,000,000.
 
 ## Supplementary data
 
