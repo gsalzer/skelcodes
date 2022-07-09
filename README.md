@@ -43,13 +43,15 @@ access to the database they refer to.
 ## Selection of bytecodes
 
 1. We collect all bytecodes that resulted from a successful `CREATE`/`CREATE2`
-   instruction or transaction, except for the empty bytecode. The latter is
-mainly the result of self-destructing deployment code. (For the record, we use
-the Ethereum client [OpenEthereum](https://github.com/openethereum/openethereum).)
+   instruction or transaction before block 14,000,000 on Ethereum's main chain.
 
 2. For each bytecode, we compute its skeleton, see
    [https://github.com/gsalzer/ethutils](https://github.com/gsalzer/ethutils/tree/main/doc/skeleton)
    for more information and scripts.
+
+3. We discard bytecodes with an empty skeleton.
+   These are mostly empty bytecodes resulting from self-destructing deployment code.
+   A few bytecodes consist entirely of zero-bytes and also possess an empty skeleton.
 
 3. We group the bytecodes by skeleton. There may be several bytecodes
    with the same skeleton, and each bytecode may have been deployed at several
@@ -84,6 +86,9 @@ in the repository:
    - the *length of the bytecode*
    - the *length of the first code segment* of the bytecode
    - the *number of entry points* (contract methods)
+
+The fields *last block*, *number of different bytecodes* and *number of deployments* take only
+deployments before block 14,000,000 into account.
 
  As an example, the line
 ```
