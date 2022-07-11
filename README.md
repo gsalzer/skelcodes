@@ -51,7 +51,7 @@ access to the database they refer to.
 
 3. We discard bytecodes with an empty skeleton.
    These are mostly empty bytecodes resulting from self-destructing deployment code.
-   A few bytecodes consist entirely of zero-bytes and also possess an empty skeleton.
+   A few bytecodes consist entirely of zeros and also possess an empty skeleton.
 
 3. We group the bytecodes by skeleton. There may be several bytecodes
    with the same skeleton, and each bytecode may have been deployed at several
@@ -69,6 +69,9 @@ Etherscan removes the source code for self-destructed contracts, and new source
 codes are uploaded every day. Moreover, we extended the initial selection of
 codes up to block 13,500,000 later conservatively by the codes newly deployed
 up to block 14,000,000.
+
+Currently 115,594 of the 248,328 codes (47%) possess a verified source; see *verified.csv* for a list of addresses. To retrieve the source code for ADDRESS from [Etherscan](https://etherscan.io), use the link
+    https://etherscan.io/address/0xADDRESS#code
 
 ## Supplementary data
 
