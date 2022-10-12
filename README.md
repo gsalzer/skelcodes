@@ -1,15 +1,20 @@
 # SkelCodes
 
-This repository contains the runtime code of contracts, self-destructed or not,
-from Ethereum's main chain, *one for each type of skeleton*. By the way of
-selection, this collection of **248,328** bytecodes faithfully represents, in
-most respects, the **45 million** contracts successfully deployed up to
-block **14,000,000** (see below for details of the selection process).
+This repository contains the deployment and runtime code of contracts,
+self-destructed or not, from Ethereum's main chain, *one for each type of
+skeleton*. By the way of selection, this collection of **248,328** bytecodes
+faithfully represents, in most respects, the **45 million** contracts
+successfully deployed up to block **14,000,000** (see below for details of the
+selection process).
 
 ## Contents of the repository
 
+The repository contains two directories, *deployment* and *runtime*, of
+identical structure, with the former containing the deployment codes and the
+latter the runtime codes of the contracts.
+
 The codes are labeled `blockid-address.hex`. `address` is one of the addresses,
-where the code has been deployed on Ethereum's main chain, `blockid` is the
+where the code has been deployed on Ethereum's main chain, and `blockid` is the
 block of creation.  Note that the address by itself is not enough to identify
 the codes uniquely.  Because of `CREATE2`, there are cases where different
 codes have been successively deployed at the same address.
@@ -42,24 +47,28 @@ access to the database they refer to.
 
 ## Selection of bytecodes
 
-1. We collect all bytecodes that resulted from a successful `CREATE`/`CREATE2`
-   instruction or transaction before block 14,000,000 on Ethereum's main chain.
+1. We collect all runtime bytecodes (with the corresponding deployment codes)
+   that resulted from a successful `CREATE`/`CREATE2` instruction or
+   transaction before block 14,000,000 on Ethereum's main chain.
 
 2. For each bytecode, we compute its skeleton, see
    [https://github.com/gsalzer/ethutils](https://github.com/gsalzer/ethutils/tree/main/doc/skeleton)
    for more information and scripts.
 
-3. We discard bytecodes with an empty skeleton.
-   These are mostly empty bytecodes resulting from self-destructing deployment code.
-   A few bytecodes consist entirely of zeros and also possess an empty skeleton.
+3. We discard bytecodes with an empty skeleton.  These are mostly empty
+   bytecodes resulting from self-destructing deployment code.  A few bytecodes
+   consist entirely of zeros and also possess an empty skeleton.
 
-3. We group the bytecodes by skeleton. There may be several bytecodes
-   with the same skeleton, and each bytecode may have been deployed at several
-   addresses. In each group, we select one bytecode and one deployment address
-   according to the following criteria, with priority decreasing from top to bottom.
+3. We group the bytecodes by skeleton. There may be several bytecodes with the
+   same skeleton, and each bytecode may have been deployed at several addresses
+   (using various deployment codes). In each group, we select one bytecode and
+   one deployment address according to the following criteria, with priority
+   decreasing from top to bottom.
 
-    - We prefer addresses, where the contract has not self-destructed until block 14,000,000.
-    - We prefer addresses, where [Etherscan](https://etherscan.io) provides verified source code.
+    - We prefer addresses, where the contract has not self-destructed
+      until block 14,000,000.
+    - We prefer addresses, where [Etherscan](https://etherscan.io) provides
+      verified source code.
     - We prefer addresses of earlier deployments.
 
    The first two criteria prefer deployment addresses where

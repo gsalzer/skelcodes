@@ -68,6 +68,8 @@ order by top.cdate;
 create unique index skelcode_bid_aid_index on skelcode(((cdate).bid),aid); -- succeeds
 create unique index skelcode_skeleton on skelcode(skeleton);
 
-\copy (select (cdate).bid,account(aid),bindata(code) code from skelcode) to 'codes.csv' with csv;
+\copy (select (cdate).bid,account(aid),bindata(code) code from skelcode) to 'runtime.csv' with csv;
+
+\copy (select (skelcode.cdate).bid,account(skelcode.aid),bindata(cdeployment) code from skelcode join contract2 on skelcode.cdate=contract2.cdate) to 'deployment.csv' with csv
 
 \copy (select concat((cdate).bid,'-',account(aid),'.hex') filename,(cdate).bid block, (cdate).tid tx, (cdate).mid msg, account(aid) address, ("first").bid "first", ("last").bid "last", codes, contracts, len_code, len_code1, len_sigs from skelcode order by filename) to 'info.csv' with csv header;
