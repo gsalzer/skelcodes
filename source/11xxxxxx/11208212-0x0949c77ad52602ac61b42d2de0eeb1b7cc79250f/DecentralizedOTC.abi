@@ -1,0 +1,576 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "bondMakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "deployer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "ERC20Address",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "int16",
+                "name": "spread",
+                "type": "int16"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isLBTSellPool",
+                "type": "bool"
+            }
+        ],
+        "name": "LogCreateERC20Pool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "LogDeleteERC20Pool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "bondGroupID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "LBTAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "ERC20Amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogERC20TokenLBTSwap",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "bondGroupID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "LBTAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "ERC20Amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogLBTERC20TokenSwap",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "etherPriceE4",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lbtPriceE4",
+                "type": "uint256"
+            },
+            {
+                "internalType": "int256",
+                "name": "nd1E8",
+                "type": "int256"
+            }
+        ],
+        "name": "_calcLbtLeverage",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "lbtLeverageE4",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "int256",
+                "name": "etherPriceE4",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "strikePriceE4",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "nd1E8",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "nd2E8",
+                "type": "int256"
+            }
+        ],
+        "name": "_calcLbtPrice",
+        "outputs": [
+            {
+                "internalType": "int256",
+                "name": "lbtPriceE4",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "bondMakerAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "int256",
+                "name": "etherPriceE4",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "strikePriceE4",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "ethVolatilityE8",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "untilMaturity",
+                "type": "int256"
+            }
+        ],
+        "name": "calcLbtPriceAndLeverage",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "priceE4",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "leverageE4",
+                "type": "uint256"
+            },
+            {
+                "internalType": "int256",
+                "name": "sigE8",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "sbtID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maturity",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcRateLBT2ERC20",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "rateLBT2ERC20E8",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deletePoolAndProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deployer",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bondGroupID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "ERC20Amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeERC20ToLBT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "LBTAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bondGroupID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "LBTAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeLBT2ERC20",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "ERC20Amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getOraclePrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "priceE8",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getPoolInfo",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "deployerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "erc20Address",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBase",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isLBTSellPool",
+                "type": "bool"
+            },
+            {
+                "internalType": "address",
+                "name": "erc20OracleAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "oracleInfo",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "calculatorAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "poolMap",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "ERC20Address",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "spread",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isLBTSellPool",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ERC20Address",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "spread",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isLBTSellPool",
+                "type": "bool"
+            }
+        ],
+        "name": "setPoolMap",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "erc20PoolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "setProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

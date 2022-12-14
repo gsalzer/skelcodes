@@ -1,0 +1,643 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_registry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_arbiter",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_settlementDelay",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "cid",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint16",
+                "name": "index",
+                "type": "uint16"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "rule",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "did",
+                "type": "uint256"
+            }
+        ],
+        "name": "DisputeConcluded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "cid",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint16",
+                "name": "index",
+                "type": "uint16"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "plaintiff",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "did",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "ignoreCoverage",
+                "type": "bool"
+            }
+        ],
+        "name": "DisputeStarted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "cid",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint16",
+                "name": "index",
+                "type": "uint16"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "witness",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "did",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "evidence",
+                "type": "bytes"
+            }
+        ],
+        "name": "DisputeWitnessed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "cid",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint16",
+                "name": "index",
+                "type": "uint16"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "plaintiff",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "refundedPercent",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "releasedPercent",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fillingStartsAt",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "statement",
+                "type": "bytes32"
+            }
+        ],
+        "name": "SettlementProposed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "cid",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint16",
+                "name": "index",
+                "type": "uint16"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "feeToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "covered",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "notCovered",
+                "type": "uint256"
+            }
+        ],
+        "name": "UsedInsurance",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "ARBITER",
+        "outputs": [
+            {
+                "internalType": "contract IAragonCourt",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SETTLEMENT_DELAY",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "TRUSTED_REGISTRY",
+        "outputs": [
+            {
+                "internalType": "contract IRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            }
+        ],
+        "name": "_genMid",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_ruling",
+                "type": "uint256"
+            }
+        ],
+        "name": "acceptSettlement",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_feePayer",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_termsCid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bool",
+                "name": "_ignoreCoverage",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "_multiMilestone",
+                "type": "bool"
+            }
+        ],
+        "name": "disputeSettlement",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "enforceableSettlements",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "escrowContract",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "refundedPercent",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "releasedPercent",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "statement",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct AragonCourtMetadataLib.Claim",
+                "name": "payerClaim",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "refundedPercent",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "releasedPercent",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "statement",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct AragonCourtMetadataLib.Claim",
+                "name": "payeeClaim",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fillingStartsAt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "did",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "ruling",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_mid",
+                "type": "bytes32"
+            }
+        ],
+        "name": "executeSettlement",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_mid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_ruling",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSettlementByRuling",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_mid",
+                "type": "bytes32"
+            }
+        ],
+        "name": "hasSettlementDispute",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            },
+            {
+                "internalType": "address",
+                "name": "_plaintiff",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_payer",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_payee",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_refundedPercent",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_releasedPercent",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_statement",
+                "type": "bytes32"
+            }
+        ],
+        "name": "proposeSettlement",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "resolutions",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_mid",
+                "type": "bytes32"
+            }
+        ],
+        "name": "ruleDispute",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "_label",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_cid",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_index",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_evidence",
+                "type": "bytes"
+            }
+        ],
+        "name": "submitEvidence",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

@@ -1,0 +1,737 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract ProxyRegistry",
+                "name": "registryAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract TokenTransferProxy",
+                "name": "tokenTransferProxyAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ERC20",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "protocolFeeAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "exchange",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "taker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "makerRelayerFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "takerRelayerFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "makerProtocolFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "takerProtocolFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "feeRecipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum ExchangeCore.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+            }
+        ],
+        "name": "OrderApprovedPartOne",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "replacementPattern",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "agent",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "agentFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "paymentToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "basePrice",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "extra",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "listingTime",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "expirationTime",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "salt",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "orderbookInclusionDesired",
+                "type": "bool"
+            }
+        ],
+        "name": "OrderApprovedPartTwo",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OrderCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "buyHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "sellHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "taker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "metadata",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OrdersMatched",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "INVERSE_BASIS_POINT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "approvedOrders",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[14]",
+                "name": "addrs",
+                "type": "address[14]"
+            },
+            {
+                "internalType": "uint256[20]",
+                "name": "uints",
+                "type": "uint256[20]"
+            },
+            {
+                "internalType": "uint8[8]",
+                "name": "feeMethodsSidesKindsHowToCalls",
+                "type": "uint8[8]"
+            },
+            {
+                "internalType": "bytes",
+                "name": "calldataBuy",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "calldataSell",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "replacementPatternBuy",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "replacementPatternSell",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint8[2]",
+                "name": "vs",
+                "type": "uint8[2]"
+            },
+            {
+                "internalType": "bytes32[5]",
+                "name": "rssMetadata",
+                "type": "bytes32[5]"
+            }
+        ],
+        "name": "atomicMatch_",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[10]",
+                "name": "uints",
+                "type": "uint256[10]"
+            },
+            {
+                "internalType": "enum ExchangeCore.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "replacementPattern",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "name": "cancelOrder_",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "cancelledOrFinalized",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newMinimumMakerProtocolFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "changeMinimumMakerProtocolFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newMinimumTakerProtocolFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "changeMinimumTakerProtocolFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newProtocolFeeRecipient",
+                "type": "address"
+            }
+        ],
+        "name": "changeProtocolFeeRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "codename",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "exchangeToken",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[10]",
+                "name": "uints",
+                "type": "uint256[10]"
+            },
+            {
+                "internalType": "enum ExchangeCore.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "replacementPattern",
+                "type": "bytes"
+            }
+        ],
+        "name": "hashOrder_",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minimumMakerProtocolFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minimumTakerProtocolFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "protocolFeeRecipient",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "registry",
+        "outputs": [
+            {
+                "internalType": "contract ProxyRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenTransferProxy",
+        "outputs": [
+            {
+                "internalType": "contract TokenTransferProxy",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[10]",
+                "name": "uints",
+                "type": "uint256[10]"
+            },
+            {
+                "internalType": "enum ExchangeCore.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "replacementPattern",
+                "type": "bytes"
+            }
+        ],
+        "name": "validateOrderParameters_",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

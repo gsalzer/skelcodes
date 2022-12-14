@@ -1,0 +1,939 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_fromMonthId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_toMonthId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_withdrawlAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_withdrawnBy",
+                "type": "address"
+            }
+        ],
+        "name": "AnnuityWithdrawl",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_appointeeAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_appointeeStatus",
+                "type": "bool"
+            }
+        ],
+        "name": "AppointeeUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_appointeeAddress",
+                "type": "address"
+            }
+        ],
+        "name": "AppointeeVoted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_burningAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "BoosterBurn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_monthId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_depositAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_depositedBy",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_usingPrepaidES",
+                "type": "bool"
+            }
+        ],
+        "name": "NewDeposit",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_monthlyCommitmentAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "NewPET",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_minimumMonthlyCommitmentAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_monthlyBenefitFactorPerThousand",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_petPlanId",
+                "type": "uint256"
+            }
+        ],
+        "name": "NewPETPlan",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_nomineeAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_nomineeStatus",
+                "type": "bool"
+            }
+        ],
+        "name": "NomineeUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_staker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_powerBoosterId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_withdrawlAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_withdrawnBy",
+                "type": "address"
+            }
+        ],
+        "name": "PowerBoosterWithdrawl",
+        "type": "event"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "addToPrepaid",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            }
+        ],
+        "name": "appointeeVote",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculatePowerBoosterAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_minimumMonthlyCommitmentAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_monthlyBenefitFactorPerThousand",
+                "type": "uint256"
+            }
+        ],
+        "name": "createPETPlan",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "deployer",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "fundsBucket",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDepositMonth",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_monthId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getMonthlyDepositedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_annuityMonthId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getNomineeAllowedTimestamp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_startAnnuityMonthId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_endAnnuityMonthId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSumOfMonthlyAnnuity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_depositAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_usePrepaidES",
+                "type": "bool"
+            }
+        ],
+        "name": "makeDeposit",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalDepositAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_frequencyMode",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_usePrepaidES",
+                "type": "bool"
+            }
+        ],
+        "name": "makeFrequencyModeDeposit",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_planId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_monthlyCommitmentAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "newPET",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "petPlans",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isPlanActive",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minimumMonthlyCommitmentAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "monthlyBenefitFactorPerThousand",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "pets",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "planId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "monthlyCommitmentAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "initTimestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastAnnuityWithdrawlMonthId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "appointeeVotes",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "numberOfAppointees",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "prepaidES",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_addresses",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_amounts",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "sendPrepaidESDifferent",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "token",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_appointeeAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_newAppointeeStatus",
+                "type": "bool"
+            }
+        ],
+        "name": "toogleAppointee",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_nomineeAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_newNomineeStatus",
+                "type": "bool"
+            }
+        ],
+        "name": "toogleNominee",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_planId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_newStatus",
+                "type": "bool"
+            }
+        ],
+        "name": "updatePlanStatus",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_appointeeAddress",
+                "type": "address"
+            }
+        ],
+        "name": "viewAppointation",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_nomineeAddress",
+                "type": "address"
+            }
+        ],
+        "name": "viewNomination",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_endAnnuityMonthId",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawAnnuity",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_stakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_petId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_powerBoosterId",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawPowerBooster",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

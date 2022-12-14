@@ -1,0 +1,590 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldController",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newController",
+                "type": "address"
+            }
+        ],
+        "name": "ChangeController",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "exposure",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogNewMakerExposure",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "count",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogNewProtocolCount",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "CHAINLINK_PRICE_DECIMALS",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "CHAINLINK_PRICE_DECIMAL_FACTOR",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "CURVE_RATIO_DECIMALS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "CURVE_RATIO_DECIMALS_FACTOR",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "DEFAULT_DECIMALS",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "DEFAULT_DECIMALS_FACTOR",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "N_COINS",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PERCENTAGE_DECIMALS",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PERCENTAGE_DECIMAL_FACTOR",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "totalCurrentAssetsUsd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "curveCurrentAssetsUsd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lifeguardCurrentAssetsUsd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "vaultCurrentAssets",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "vaultCurrentAssetsUsd",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rebalanceThreshold",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "utilisationRatio",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetBuffer",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "stablePercents",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "curvePercent",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct SystemState",
+                "name": "sysState",
+                "type": "tuple"
+            }
+        ],
+        "name": "calcRiskExposure",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "stablecoinExposure",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "protocolExposure",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "curveExposure",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "stablecoinExposed",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "protocolExposed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct ExposureState",
+                "name": "expState",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[3]",
+                "name": "targets",
+                "type": "uint256[3]"
+            },
+            {
+                "internalType": "address[3]",
+                "name": "vaults",
+                "type": "address[3]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawUsd",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcRoughDelta",
+        "outputs": [
+            {
+                "internalType": "uint256[3]",
+                "name": "delta",
+                "type": "uint256[3]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "controller",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ctrlPaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "totalCurrentAssetsUsd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "curveCurrentAssetsUsd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lifeguardCurrentAssetsUsd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "vaultCurrentAssets",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "vaultCurrentAssetsUsd",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rebalanceThreshold",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "utilisationRatio",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetBuffer",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "stablePercents",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "curvePercent",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct SystemState",
+                "name": "sysState",
+                "type": "tuple"
+            }
+        ],
+        "name": "getExactRiskExposure",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256[3]",
+                        "name": "stablecoinExposure",
+                        "type": "uint256[3]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "protocolExposure",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "curveExposure",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "stablecoinExposed",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "protocolExposed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct ExposureState",
+                "name": "expState",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[3]",
+                "name": "vaults",
+                "type": "address[3]"
+            }
+        ],
+        "name": "getUnifiedAssets",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "unifiedTotalAssets",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[3]",
+                "name": "unifiedAssets",
+                "type": "uint256[3]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "makerUSDCExposure",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "protocolCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newController",
+                "type": "address"
+            }
+        ],
+        "name": "setController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_makerUSDCExposure",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMakerUSDCExposure",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_protocolCount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setProtocolCount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "bigFirst",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "unifiedTotalAssets",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[3]",
+                "name": "unifiedAssets",
+                "type": "uint256[3]"
+            },
+            {
+                "internalType": "uint256[3]",
+                "name": "targetPercents",
+                "type": "uint256[3]"
+            }
+        ],
+        "name": "sortVaultsByDelta",
+        "outputs": [
+            {
+                "internalType": "uint256[3]",
+                "name": "vaultIndexes",
+                "type": "uint256[3]"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

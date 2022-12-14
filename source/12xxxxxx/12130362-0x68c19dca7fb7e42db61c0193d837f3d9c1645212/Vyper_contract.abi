@@ -1,0 +1,593 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "loanKey",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "name": "depositor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "AddCollateral",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "borrowAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "Borrow",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "Fallback",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "loanKey",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "name": "outstanding",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "borrowAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "Liquidate",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "borrowAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "loanKeys",
+                "type": "bytes32[100]"
+            },
+            {
+                "indexed": false,
+                "name": "redemptionAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "repayAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "Liquidation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "repaymentAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "repaymentAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "redemptionAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "redemptionAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "Repay",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "previousRegistry",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "newRegistry",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "governance",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetRegistry",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "loanKey",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "collateralLocked",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawCollateral",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_registry",
+                "type": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "gas": 147590,
+        "inputs": [
+            {
+                "name": "_borrow_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_collateral_ticker",
+                "type": "string"
+            },
+            {
+                "components": [
+                    {
+                        "name": "aToken",
+                        "type": "address"
+                    },
+                    {
+                        "name": "aaveV2PriceFeed",
+                        "type": "address"
+                    },
+                    {
+                        "name": "aaveV2LendingPool",
+                        "type": "address"
+                    },
+                    {
+                        "name": "cToken",
+                        "type": "address"
+                    },
+                    {
+                        "name": "compoundPriceFeed",
+                        "type": "address"
+                    },
+                    {
+                        "name": "comptroller",
+                        "type": "address"
+                    },
+                    {
+                        "name": "decimals",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "underlying",
+                        "type": "address"
+                    }
+                ],
+                "name": "_borrow_context",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "name": "aToken",
+                        "type": "address"
+                    },
+                    {
+                        "name": "aaveV2PriceFeed",
+                        "type": "address"
+                    },
+                    {
+                        "name": "aaveV2LendingPool",
+                        "type": "address"
+                    },
+                    {
+                        "name": "cToken",
+                        "type": "address"
+                    },
+                    {
+                        "name": "compoundPriceFeed",
+                        "type": "address"
+                    },
+                    {
+                        "name": "comptroller",
+                        "type": "address"
+                    },
+                    {
+                        "name": "decimals",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "underlying",
+                        "type": "address"
+                    }
+                ],
+                "name": "_collateral_context",
+                "type": "tuple"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_borrower",
+                "type": "address"
+            },
+            {
+                "name": "_calculator",
+                "type": "address"
+            },
+            {
+                "name": "_collateralization_ratio",
+                "type": "uint256"
+            },
+            {
+                "name": "_store",
+                "type": "address"
+            },
+            {
+                "name": "_version",
+                "type": "string"
+            }
+        ],
+        "name": "borrow",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "gas": 107742,
+        "inputs": [
+            {
+                "name": "_borrow_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_collateral_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_calculator",
+                "type": "address"
+            },
+            {
+                "name": "_loan_key",
+                "type": "bytes32"
+            },
+            {
+                "name": "_store",
+                "type": "address"
+            },
+            {
+                "name": "_version",
+                "type": "string"
+            }
+        ],
+        "name": "repay",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "gas": 63347,
+        "inputs": [
+            {
+                "name": "_collateral_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_depositor",
+                "type": "address"
+            },
+            {
+                "name": "_loan_key",
+                "type": "bytes32"
+            },
+            {
+                "name": "_store",
+                "type": "address"
+            },
+            {
+                "name": "_version",
+                "type": "string"
+            }
+        ],
+        "name": "addCollateral",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "gas": 70501,
+        "inputs": [
+            {
+                "name": "_borrow_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_collateral_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_calculator",
+                "type": "address"
+            },
+            {
+                "name": "_loan_key",
+                "type": "bytes32"
+            },
+            {
+                "name": "_store",
+                "type": "address"
+            },
+            {
+                "name": "_version",
+                "type": "string"
+            }
+        ],
+        "name": "withdrawCollateral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "gas": 460789,
+        "inputs": [
+            {
+                "name": "_borrow_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_collateral_ticker",
+                "type": "string"
+            },
+            {
+                "name": "_borrow_index",
+                "type": "uint256"
+            },
+            {
+                "name": "_key_count",
+                "type": "uint256"
+            },
+            {
+                "name": "_loan_keys",
+                "type": "bytes32[100]"
+            },
+            {
+                "name": "_liquidator",
+                "type": "address"
+            },
+            {
+                "name": "_redeem_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_repay_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_store",
+                "type": "address"
+            },
+            {
+                "name": "_version",
+                "type": "string"
+            }
+        ],
+        "name": "liquidate",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "gas": 19431,
+        "inputs": [
+            {
+                "name": "_comp",
+                "type": "address"
+            },
+            {
+                "name": "_comptroller",
+                "type": "address"
+            },
+            {
+                "name": "_version",
+                "type": "string"
+            }
+        ],
+        "name": "claimComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "gas": 47193,
+        "inputs": [
+            {
+                "name": "_new_registry",
+                "type": "address"
+            }
+        ],
+        "name": "setRegistry",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "gas": 1421,
+        "inputs": [],
+        "name": "registry",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

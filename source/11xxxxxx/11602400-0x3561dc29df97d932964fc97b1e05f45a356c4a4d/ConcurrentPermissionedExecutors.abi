@@ -1,0 +1,993 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_gelatoCore",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_gelatoProvider",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "executor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "error",
+                "type": "string"
+            }
+        ],
+        "name": "LogExecutorPayoutFailed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "executor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "provider",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "error",
+                "type": "string"
+            }
+        ],
+        "name": "LogProviderRefundFailed",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_executor",
+                "type": "address"
+            }
+        ],
+        "name": "addExecutor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userProxy",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "addr",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "contract IGelatoProviderModule",
+                                "name": "module",
+                                "type": "address"
+                            }
+                        ],
+                        "internalType": "struct Provider",
+                        "name": "provider",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "contract IGelatoCondition",
+                                        "name": "inst",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    }
+                                ],
+                                "internalType": "struct Condition[]",
+                                "name": "conditions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "address",
+                                        "name": "addr",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    },
+                                    {
+                                        "internalType": "enum Operation",
+                                        "name": "operation",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "enum DataFlow",
+                                        "name": "dataFlow",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "value",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "bool",
+                                        "name": "termsOkCheck",
+                                        "type": "bool"
+                                    }
+                                ],
+                                "internalType": "struct Action[]",
+                                "name": "actions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasLimit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasPriceCeil",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Task[]",
+                        "name": "tasks",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiryDate",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cycleId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "submissionsLeft",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct TaskReceipt[]",
+                "name": "_taskReceipts",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_gelatoGasPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_buffer",
+                "type": "uint256"
+            }
+        ],
+        "name": "bufferedMultiCanExec",
+        "outputs": [
+            {
+                "internalType": "enum ConcurrentPermissionedExecutors.SlotStatus",
+                "name": "slotStatus",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "blockNumber",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "taskReceiptId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "taskGasLimit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "response",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct PermissionedExecutors.Reponse[]",
+                "name": "responses",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_currentBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_blocksPerSlot",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_numberOfExecutors",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcExecutorIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "executorIndex",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "remainingBlocksInSlot",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "currentExecutor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "executor",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "executorIndex",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "remainingBlocksInSlot",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userProxy",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "addr",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "contract IGelatoProviderModule",
+                                "name": "module",
+                                "type": "address"
+                            }
+                        ],
+                        "internalType": "struct Provider",
+                        "name": "provider",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "contract IGelatoCondition",
+                                        "name": "inst",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    }
+                                ],
+                                "internalType": "struct Condition[]",
+                                "name": "conditions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "address",
+                                        "name": "addr",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    },
+                                    {
+                                        "internalType": "enum Operation",
+                                        "name": "operation",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "enum DataFlow",
+                                        "name": "dataFlow",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "value",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "bool",
+                                        "name": "termsOkCheck",
+                                        "type": "bool"
+                                    }
+                                ],
+                                "internalType": "struct Action[]",
+                                "name": "actions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasLimit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasPriceCeil",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Task[]",
+                        "name": "tasks",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiryDate",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cycleId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "submissionsLeft",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct TaskReceipt",
+                "name": "_taskReceipt",
+                "type": "tuple"
+            }
+        ],
+        "name": "exec",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "name": "executorAt",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "executors",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "__executors",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gelatoCore",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gelatoProvider",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentExecutorIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "executorIndex",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "remainingBlocksInSlot",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userProxy",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "addr",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "contract IGelatoProviderModule",
+                                "name": "module",
+                                "type": "address"
+                            }
+                        ],
+                        "internalType": "struct Provider",
+                        "name": "provider",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "contract IGelatoCondition",
+                                        "name": "inst",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    }
+                                ],
+                                "internalType": "struct Condition[]",
+                                "name": "conditions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "address",
+                                        "name": "addr",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    },
+                                    {
+                                        "internalType": "enum Operation",
+                                        "name": "operation",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "enum DataFlow",
+                                        "name": "dataFlow",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "value",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "bool",
+                                        "name": "termsOkCheck",
+                                        "type": "bool"
+                                    }
+                                ],
+                                "internalType": "struct Action[]",
+                                "name": "actions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasLimit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasPriceCeil",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Task[]",
+                        "name": "tasks",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiryDate",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cycleId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "submissionsLeft",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct TaskReceipt",
+                "name": "_taskReceipt",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_gelatoMaxGas",
+                "type": "uint256"
+            }
+        ],
+        "name": "getGasLimit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_executor",
+                "type": "address"
+            }
+        ],
+        "name": "indexOfExectuor",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_executor",
+                "type": "address"
+            }
+        ],
+        "name": "isExecutor",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userProxy",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "addr",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "contract IGelatoProviderModule",
+                                "name": "module",
+                                "type": "address"
+                            }
+                        ],
+                        "internalType": "struct Provider",
+                        "name": "provider",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "contract IGelatoCondition",
+                                        "name": "inst",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    }
+                                ],
+                                "internalType": "struct Condition[]",
+                                "name": "conditions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "address",
+                                        "name": "addr",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "data",
+                                        "type": "bytes"
+                                    },
+                                    {
+                                        "internalType": "enum Operation",
+                                        "name": "operation",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "enum DataFlow",
+                                        "name": "dataFlow",
+                                        "type": "uint8"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "value",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "bool",
+                                        "name": "termsOkCheck",
+                                        "type": "bool"
+                                    }
+                                ],
+                                "internalType": "struct Action[]",
+                                "name": "actions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasLimit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "selfProviderGasPriceCeil",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Task[]",
+                        "name": "tasks",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiryDate",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cycleId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "submissionsLeft",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct TaskReceipt[]",
+                "name": "_taskReceipts",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_gelatoGasPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "multiCanExec",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "blockNumber",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "taskReceiptId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "taskGasLimit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "response",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct PermissionedExecutors.Reponse[]",
+                "name": "responses",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_providers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address",
+                "name": "_newExecutor",
+                "type": "address"
+            }
+        ],
+        "name": "multiReassignProviders",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_buffer",
+                "type": "uint256"
+            }
+        ],
+        "name": "mySlotStatus",
+        "outputs": [
+            {
+                "internalType": "enum ConcurrentPermissionedExecutors.SlotStatus",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_provider",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "providerRefund",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_executor",
+                "type": "address"
+            }
+        ],
+        "name": "removeExecutor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_slotLength",
+                "type": "uint256"
+            }
+        ],
+        "name": "setSlotLength",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "slotLength",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "stakeExecutor",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unstakeExecutor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawContractBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_withdrawAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawExcessExecutorStake",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

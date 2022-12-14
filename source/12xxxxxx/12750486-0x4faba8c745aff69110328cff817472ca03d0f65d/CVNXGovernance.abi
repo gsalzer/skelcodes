@@ -1,0 +1,558 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_cvnxTokenAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "pollNum",
+                "type": "uint256"
+            }
+        ],
+        "name": "PollCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "pollNum",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "stopTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "PollStop",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "voterAddress",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "enum ICVNXGovernance.VoteType",
+                "name": "voteType",
+                "type": "uint8"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "voteWeight",
+                "type": "uint256"
+            }
+        ],
+        "name": "PollVoted",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "_pollDeadline",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "_pollInfo",
+                "type": "string"
+            }
+        ],
+        "name": "createEventPoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "_pollDeadline",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "_pollInfo",
+                "type": "string"
+            }
+        ],
+        "name": "createExecutivePoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "_pollDeadline",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "_pollInfo",
+                "type": "string"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_verifiedAddresses",
+                "type": "address[]"
+            }
+        ],
+        "name": "createPrivatePoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "_pollDeadline",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "_pollInfo",
+                "type": "string"
+            }
+        ],
+        "name": "createProposalPoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_voter",
+                "type": "address"
+            }
+        ],
+        "name": "getIfUserHasVoted",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_voter",
+                "type": "address"
+            }
+        ],
+        "name": "getLockedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPollExpirationTime",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_voter",
+                "type": "address"
+            }
+        ],
+        "name": "getPollHistory",
+        "outputs": [
+            {
+                "internalType": "bool[]",
+                "name": "",
+                "type": "bool[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_voter",
+                "type": "address"
+            }
+        ],
+        "name": "getPollInfoForVoter",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "enum ICVNXGovernance.VoteType",
+                        "name": "voteType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "voteWeight",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ICVNXGovernance.Vote",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_voter",
+                "type": "address"
+            }
+        ],
+        "name": "getPollLockedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPollStatus",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum ICVNXGovernance.PollStatus",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPollStopTime",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "isTokenLockedInPoll",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "polls",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "pollDeadline",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "pollStopped",
+                "type": "uint64"
+            },
+            {
+                "internalType": "enum ICVNXGovernance.PollType",
+                "name": "pollType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "pollOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "pollInfo",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "forWeight",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "againstWeight",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            }
+        ],
+        "name": "stopPoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            }
+        ],
+        "name": "unlockTokensInPoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "verifiedToVote",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_pollNum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum ICVNXGovernance.VoteType",
+                "name": "_voteType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_voteWeight",
+                "type": "uint256"
+            }
+        ],
+        "name": "vote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "voted",
+        "outputs": [
+            {
+                "internalType": "enum ICVNXGovernance.VoteType",
+                "name": "voteType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "voteWeight",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

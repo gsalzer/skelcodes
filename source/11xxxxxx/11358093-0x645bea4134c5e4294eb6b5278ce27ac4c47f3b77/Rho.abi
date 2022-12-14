@@ -1,0 +1,1345 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract InterestRateModelInterface",
+                "name": "interestRateModel_",
+                "type": "address"
+            },
+            {
+                "internalType": "contract CTokenInterface",
+                "name": "cToken_",
+                "type": "address"
+            },
+            {
+                "internalType": "contract CompInterface",
+                "name": "comp_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minFloatRateMantissa_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxFloatRateMantissa_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "swapMinDuration_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "supplyMinDuration_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "admin_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "liquidityLimitCTokens_",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "supplierLiquidityNew",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "lockedCollateralNew",
+                "type": "uint256"
+            }
+        ],
+        "name": "Accrue",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldAdmin",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "AdminRenounced",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "swapHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "userPayout",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "penalty",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "benchmarkIndexFinal",
+                "type": "uint256"
+            }
+        ],
+        "name": "CloseSwap",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "delegatee",
+                "type": "address"
+            }
+        ],
+        "name": "CompDelegated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "dest",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "CompTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "swapHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "userPayingFixed",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "benchmarkIndexInit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "initBlock",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "swapFixedRateMantissa",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "notionalAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "userCollateralCTokens",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "OpenSwap",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "supplier",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "removeCTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newSupplyValue",
+                "type": "uint256"
+            }
+        ],
+        "name": "Remove",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "minFloatRateMantissa",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "maxFloatRateMantissa",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetCollateralRequirements",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newModel",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldModel",
+                "type": "address"
+            }
+        ],
+        "name": "SetInterestRateModel",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetLiquidityLimit",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isPaused",
+                "type": "bool"
+            }
+        ],
+        "name": "SetPause",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "supplier",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "cTokenSupplyAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newSupplyAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Supply",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "CLOSE_GRACE_PERIOD_BLOCKS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "CLOSE_PENALTY_PER_BLOCK_MANTISSA",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MIN_SWAP_NOTIONAL",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SUPPLY_MIN_DURATION",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SWAP_MIN_DURATION",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "admin_",
+                "type": "address"
+            }
+        ],
+        "name": "_changeAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "delegatee",
+                "type": "address"
+            }
+        ],
+        "name": "_delegateComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "isPaused_",
+                "type": "bool"
+            }
+        ],
+        "name": "_pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "minFloatRateMantissa_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxFloatRateMantissa_",
+                "type": "uint256"
+            }
+        ],
+        "name": "_setCollateralRequirements",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract InterestRateModelInterface",
+                "name": "newModel",
+                "type": "address"
+            }
+        ],
+        "name": "_setInterestRateModel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "limit_",
+                "type": "uint256"
+            }
+        ],
+        "name": "_setLiquidityLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "dest",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "_transferComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "admin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "avgFixedRatePaying",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mantissa",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "avgFixedRateReceiving",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mantissa",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "benchmarkIndexStored",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mantissa",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cToken",
+        "outputs": [
+            {
+                "internalType": "contract CTokenInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "userPayingFixed",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "benchmarkIndexInit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "initBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "swapFixedRateMantissa",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "notionalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "userCollateralCTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "close",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "comp",
+        "outputs": [
+            {
+                "internalType": "contract CompInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getBenchmarkIndex",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getBlockNumber",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getExchangeRate",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "accruedBlocks",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "getLockedCollateral",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "lockedCollateral",
+                "type": "tuple"
+            },
+            {
+                "internalType": "int256",
+                "name": "parBlocksReceivingFixedNew",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "parBlocksPayingFixedNew",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "fixedRate",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "notionalAmount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "getPayFixedInitCollateral",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "fixedRate",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "notionalAmount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "getReceiveFixedInitCollateral",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "accruedBlocks",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "floatRate",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "getSupplierLiquidity",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "supplierLiquidityNew",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "userPayingFixed",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "orderNotional",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "lockedCollateral",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "supplierLiquidity_",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "getSwapRate",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "",
+                "type": "tuple"
+            },
+            {
+                "internalType": "int256",
+                "name": "",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "interestRateModel",
+        "outputs": [
+            {
+                "internalType": "contract InterestRateModelInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isPaused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lastAccrualBlock",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "liquidityLimit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "val",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "maxFloatRate",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mantissa",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minFloatRate",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mantissa",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "notionalPayingFixed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "notionalPayingFloat",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "notionalReceivingFixed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "notionalReceivingFloat",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "notionalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maximumFixedRateMantissa",
+                "type": "uint256"
+            }
+        ],
+        "name": "openPayFixedSwap",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "swapHash",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "notionalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minFixedRateMantissa",
+                "type": "uint256"
+            }
+        ],
+        "name": "openReceiveFixedSwap",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "swapHash",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "parBlocksPayingFixed",
+        "outputs": [
+            {
+                "internalType": "int256",
+                "name": "",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "parBlocksReceivingFixed",
+        "outputs": [
+            {
+                "internalType": "int256",
+                "name": "",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rateFactor",
+        "outputs": [
+            {
+                "internalType": "int256",
+                "name": "",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "removeCTokenAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "remove",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "supplierLiquidity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "val",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "cTokenSupplyAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "supply",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "supplyAccounts",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "amount",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastBlock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "supplyIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "swaps",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "toCTokens",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "val",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.CTokenAmount",
+                "name": "amount",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "mantissa",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Types.Exp",
+                "name": "cTokenExchangeRate",
+                "type": "tuple"
+            }
+        ],
+        "name": "toUnderlying",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    }
+]

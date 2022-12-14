@@ -1,0 +1,802 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "taxTokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint32",
+                "name": "preVoteLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "totalVoteLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "expirationLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minVoteE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minVoteCoreE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minCommitE4",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "LogApprovedProposal",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "approval",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogDeposit",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "preVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "mainVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "expiration",
+                "type": "uint32"
+            }
+        ],
+        "name": "LogProposeDelistWhiteList",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "preVoteLength",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "totalVoteLength",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "expirationLength",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "minVoteE4",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "minVoteCoreE4",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "minCommitE4",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "preVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "mainVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "expiration",
+                "type": "uint32"
+            }
+        ],
+        "name": "LogProposeUpdateCoreParameters",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "incentiveAddresses",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "incentiveAllocation",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "preVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "mainVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "expiration",
+                "type": "uint32"
+            }
+        ],
+        "name": "LogProposeUpdateIncentive",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "preVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "mainVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "expiration",
+                "type": "uint32"
+            }
+        ],
+        "name": "LogProposeUpdateWhiteList",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "preVoteLength",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "totalVoteLength",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "expirationLength",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "minVoteE4",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "minVoteCoreE4",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "minCommitE4",
+                "type": "uint16"
+            }
+        ],
+        "name": "LogUpdateCoreParameters",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogWithdraw",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "applyGovernanceForDelistWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "applyGovernanceForUpdateCore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "applyGovernanceForUpdateIncentive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "applyGovernanceForUpdateWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCoreParameters",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "preVoteLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "totalVoteLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "expirationLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minimumVoteE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minimumVoteCoreE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minimumCommitE4",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getInfoDelistWhitelist",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getInfoUpdateCoreParameters",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "preVoteLength",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "totalVoteLength",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "expirationLength",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minVoteE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minVoteCoreE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minCommitE4",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getInfoUpdateIncentive",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "incentiveAddresses",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "incentiveAllocation",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getInfoUpdateWhitelist",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "getProposals",
+        "outputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "allProposals",
+                "type": "bytes32[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getStatus",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "currentApprovalVoteSum",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "currentDenialVoteSum",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "appliedMinimumVote",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint32",
+                "name": "preVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "mainVoteDeadline",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "expiration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "bool",
+                "name": "lockin",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "applied",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTaxTokenAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            }
+        ],
+        "name": "getUserStatus",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "approvalAmount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "denialAmount",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "lockinProposal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            }
+        ],
+        "name": "proposeDelistWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "preVoteLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "totalVoteLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "expirationLength",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minVoteE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minVoteCoreE4",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "minCommitE4",
+                "type": "uint16"
+            }
+        ],
+        "name": "proposeUpdateCoreParameters",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "incentiveAddresses",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "incentiveAllocation",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "proposeUpdateIncentiveFund",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            }
+        ],
+        "name": "proposeUpdateWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bool",
+                "name": "approval",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            }
+        ],
+        "name": "vote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "proposeId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

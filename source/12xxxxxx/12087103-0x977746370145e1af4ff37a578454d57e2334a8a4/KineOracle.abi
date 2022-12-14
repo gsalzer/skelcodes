@@ -1,0 +1,1247 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract OpenOraclePriceData",
+                "name": "priceData_",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "reporter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "kaptain",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "uniswapFactory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "wrappedETHAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "anchorToleranceMantissa",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "anchorPeriod",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct KineOracle.KineOracleConfig",
+                "name": "kineOracleConfig_",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "kToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlying",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "symbolHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "baseUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum PriceConfig.KPriceSource",
+                        "name": "priceSource",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fixedPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "uniswapMarket",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isUniswapReversed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct PriceConfig.KTokenConfig[]",
+                "name": "configs",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "contract ICompoundOracle",
+                "name": "compoundOracle_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "anchorPrice",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldTimestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "AnchorPriceUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "fromAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "toAddress",
+                "type": "address"
+            }
+        ],
+        "name": "CompoundOracleUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "fromAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "toAddress",
+                "type": "address"
+            }
+        ],
+        "name": "KaptainUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "reporter",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "anchor",
+                "type": "uint256"
+            }
+        ],
+        "name": "PriceGuarded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            }
+        ],
+        "name": "PriceUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "reporter",
+                "type": "address"
+            }
+        ],
+        "name": "ReporterInvalidated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldReporter",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newReporter",
+                "type": "address"
+            }
+        ],
+        "name": "ReporterUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "symbolHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "baseUnit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum PriceConfig.KPriceSource",
+                "name": "priceSource",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fixedPrice",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "uniswapMarket",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isUniswapReversed",
+                "type": "bool"
+            }
+        ],
+        "name": "TokenConfigAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "symbolHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "baseUnit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum PriceConfig.KPriceSource",
+                "name": "priceSource",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fixedPrice",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "uniswapMarket",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isUniswapReversed",
+                "type": "bool"
+            }
+        ],
+        "name": "TokenConfigRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "symbolHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldTimestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newTimestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldPrice",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "UniswapWindowUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "kToken_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "underlying_",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "symbolHash_",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseUnit_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum PriceConfig.KPriceSource",
+                "name": "priceSource_",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fixedPrice_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "uniswapMarket_",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isUniswapReversed_",
+                "type": "bool"
+            }
+        ],
+        "name": "addConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "anchorPeriod",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "kaptain_",
+                "type": "address"
+            }
+        ],
+        "name": "changeKaptain",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "reporter_",
+                "type": "address"
+            }
+        ],
+        "name": "changeReporter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "kToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlying",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "symbolHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "baseUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum PriceConfig.KPriceSource",
+                        "name": "priceSource",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fixedPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "uniswapMarket",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isUniswapReversed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct PriceConfig.KTokenConfig",
+                "name": "config",
+                "type": "tuple"
+            }
+        ],
+        "name": "checkConfig",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "compoundOracle",
+        "outputs": [
+            {
+                "internalType": "contract ICompoundOracle",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ethBaseUnit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "expScale",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            }
+        ],
+        "name": "getKConfigByKToken",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "kToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlying",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "symbolHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "baseUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum PriceConfig.KPriceSource",
+                        "name": "priceSource",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fixedPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "uniswapMarket",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isUniswapReversed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct PriceConfig.KTokenConfig",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            }
+        ],
+        "name": "getKConfigIndexByKToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "symbolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getKConfigIndexBySymbolHash",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            }
+        ],
+        "name": "getKConfigIndexByUnderlying",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            }
+        ],
+        "name": "getKTokenConfigBySymbol",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "kToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlying",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "symbolHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "baseUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum PriceConfig.KPriceSource",
+                        "name": "priceSource",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fixedPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "uniswapMarket",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isUniswapReversed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct PriceConfig.KTokenConfig",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "symbolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getKTokenConfigBySymbolHash",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "kToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlying",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "symbolHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "baseUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum PriceConfig.KPriceSource",
+                        "name": "priceSource",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fixedPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "uniswapMarket",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isUniswapReversed",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct PriceConfig.KTokenConfig",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            }
+        ],
+        "name": "getUnderlyingPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "message",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "invalidateReporter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "kTokenConfigs",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "symbolHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseUnit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum PriceConfig.KPriceSource",
+                "name": "priceSource",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fixedPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "uniswapMarket",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isUniswapReversed",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "kaptain",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lowerBoundAnchorRatio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "mcdLastUpdatedAt",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "newObservations",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "acc",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "oldObservations",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "acc",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "mcdPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "postMcdPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes[]",
+                "name": "messages",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "signatures",
+                "type": "bytes[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "symbols",
+                "type": "string[]"
+            }
+        ],
+        "name": "postPrices",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            }
+        ],
+        "name": "price",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceData",
+        "outputs": [
+            {
+                "internalType": "contract OpenOraclePriceData",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "prices",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "kToken",
+                "type": "address"
+            }
+        ],
+        "name": "removeConfigByKToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reporter",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reporterInvalidated",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "oracleAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setCompoundOracle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "message",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "source",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "uniswapFactory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "upperBoundAnchorRatio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "wrappedETHAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

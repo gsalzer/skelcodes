@@ -1,0 +1,582 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_transferTokenMode",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "modifiedAllocation",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountClaimed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "remainingDistribution",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokensToReturnToCore",
+                "type": "uint256"
+            }
+        ],
+        "name": "EVT_cutoffTriggered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "modifiedAllocation",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountClaimed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "overAllocatedDistribution",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokensToReturnToCore",
+                "type": "uint256"
+            }
+        ],
+        "name": "EVT_cutoffTriggeredOverAllocated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalAllocated",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "endCliff",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "endVesting",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "cutoffTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "cutoffAdminAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "distributionTableHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "EVT_newAllocation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "amountClaimed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalAllocated",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "grandTotalClaimed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timeStamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "EVT_shyftClaimed",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "INITIAL_SUPPLY",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "allocations",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "endCliff",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "endVesting",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAllocated",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountClaimed",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "cutoffTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "cutoffAdminAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "cutoffEnabled",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "distributionTableHash",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            }
+        ],
+        "name": "claimTokens",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "result",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "timeStamp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "disableSettingNewAllocations",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "result",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_currentDistributionTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCurrentCycleNumber",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "curCycle",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_referenceTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTokensAvailable",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "result",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokensTransferred",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokensReceived",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "currentCycleNumber",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "kycContractRegistryAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalAllocated",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_endCliffDays",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_endVestingDays",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_cutoffTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_cutoffAdminAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_distributionTableHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "setAllocation",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "result",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "setKycContractRegistryAddress",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "result",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "setShyftCoreTokenAddress",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "result",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_distributionTableName",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_vestEndSeconds",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "timePeriodStart",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timePeriodEnd",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "percentTokens",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "int128",
+                        "name": "percentTokens_fixedPoint",
+                        "type": "int128"
+                    }
+                ],
+                "internalType": "struct ShyftKycDistribution.distributionCycle[]",
+                "name": "_cycles",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_totalPercentAtEndOfCycles_18DecimalPrecision",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "setupDistributionTable",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "result",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "shyftCoreTokenAddress",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "startTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalClaimed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "transferTokenMode",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            }
+        ],
+        "name": "triggerCutoff",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "result",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "distributionFound",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

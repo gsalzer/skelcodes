@@ -1,0 +1,612 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "doubleProxy",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "ethItemERC20WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "erc1155ModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "erc1155WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "erc721WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "erc20WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "mintFeePercentageNumerator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "mintFeePercentageDenominator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "burnFeePercentageNumerator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "burnFeePercentageDenominator",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "model",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "modelVersion",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenCreated",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+            }
+        ],
+        "name": "NewERC1155Created",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "model",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "modelVersion",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenCreated",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+            }
+        ],
+        "name": "NewWrappedERC1155Created",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "model",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "modelVersion",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenCreated",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+            }
+        ],
+        "name": "NewWrappedERC20Created",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "model",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "modelVersion",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenCreated",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+            }
+        ],
+        "name": "NewWrappedERC721Created",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "burnFeePercentage",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "burnFeePercentageNumerator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "burnFeePercentageDenominator",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountInDecimals",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculateBurnFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "burnFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "dfoWalletAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountInDecimals",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculateMintFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mintFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "dfoWalletAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallPayload",
+                "type": "bytes"
+            }
+        ],
+        "name": "createERC1155",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "newNFT1155Address",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallResponse",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallPayload",
+                "type": "bytes"
+            }
+        ],
+        "name": "createWrappedERC1155",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "newNFT1155Address",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallResponse",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallPayload",
+                "type": "bytes"
+            }
+        ],
+        "name": "createWrappedERC20",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "newERC20Address",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallResponse",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallPayload",
+                "type": "bytes"
+            }
+        ],
+        "name": "createWrappedERC721",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "newERC721Address",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "modelInitCallResponse",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "doubleProxy",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "erc1155Model",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "erc1155ModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "erc1155ModelVersion",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "erc1155WrapperModel",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "erc1155WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "erc1155WrapperModelVersion",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "erc20WrapperModel",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "erc20WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "erc20WrapperModelVersion",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "erc721WrapperModel",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "erc721WrapperModelAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "erc721WrapperModelVersion",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ethItemERC20WrapperModel",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "ethItemERC20WrapperModelAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "name": "isAuthorizedOrchestrator",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "mintFeePercentage",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "mintFeePercentageNumerator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "mintFeePercentageDenominator",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "burnFeePercentageNumerator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "burnFeePercentageDenominator",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBurnFeePercentage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newDoubleProxy",
+                "type": "address"
+            }
+        ],
+        "name": "setDoubleProxy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "erc1155ModelAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setERC1155Model",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "erc1155WrapperModelAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setERC1155WrapperModel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "erc20WrapperModelAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setERC20WrapperModel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "erc721WrapperModelAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setERC721WrapperModel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ethItemERC20WrapperModelAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setEthItemERC20WrapperModel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "mintFeePercentageNumerator",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "mintFeePercentageDenominator",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMintFeePercentage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

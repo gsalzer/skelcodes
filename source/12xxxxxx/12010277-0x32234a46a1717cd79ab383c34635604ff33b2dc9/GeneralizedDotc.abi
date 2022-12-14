@@ -1,0 +1,1337 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract BondMakerInterface",
+                "name": "bondMakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract VolatilityOracleInterface",
+                "name": "volatilityOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "volumeCalculatorAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract DetectBondShape",
+                "name": "bondShapeDetector",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "bondMakerForUser",
+                "type": "address"
+            }
+        ],
+        "name": "LogCreateBondToBondPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "swapPairAddress",
+                "type": "address"
+            }
+        ],
+        "name": "LogCreateBondToErc20Pool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            }
+        ],
+        "name": "LogCreateBondToEthPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "swapPairAddress",
+                "type": "address"
+            }
+        ],
+        "name": "LogCreateErc20ToBondPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            }
+        ],
+        "name": "LogCreateEthToBondPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "LogDeleteVsBondPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "LogDeleteVsErc20Pool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "LogDeleteVsEthPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogExchangeBondToBond",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogExchangeBondToErc20",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogExchangeBondToEth",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogExchangeErc20ToBond",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "volume",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogExchangeEthToBond",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogTransferETH",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "bondPricerForUser",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "bondPricer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "int16",
+                "name": "feeBase",
+                "type": "int16"
+            }
+        ],
+        "name": "LogUpdateVsBondPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "swapPairOracleAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "int16",
+                "name": "feeBase",
+                "type": "int16"
+            }
+        ],
+        "name": "LogUpdateVsErc20Pool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "ethOracleAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "int16",
+                "name": "feeBase",
+                "type": "int16"
+            }
+        ],
+        "name": "LogUpdateVsEthPool",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "bondMakerAddress",
+        "outputs": [
+            {
+                "internalType": "contract BondMakerInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "calcRateBondToErc20",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "rateE8",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "calcRateBondToEth",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "rateE8",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "calcRateBondToUsd",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "rateE8",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract BondMakerInterface",
+                "name": "bondMakerForUserAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract VolatilityOracleInterface",
+                "name": "volatilityOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerForUserAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            }
+        ],
+        "name": "createVsBondPool",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "swapPairAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "swapPairOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "name": "createVsErc20Pool",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "ethOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "name": "createVsEthPool",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deleteVsBondPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deleteVsErc20Pool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deleteVsEthPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "depositEth",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "ethAllowance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "bondIDs",
+                "type": "bytes32[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountInDollarsE8",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeBondToBond",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeBondToErc20",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeBondToEth",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "ethAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "swapPairAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeErc20ToBond",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "bondID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "ethAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "range",
+                "type": "uint256"
+            }
+        ],
+        "name": "exchangeEthToBond",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "bondAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "bondMakerForUser",
+                "type": "address"
+            }
+        ],
+        "name": "generateVsBondPoolID",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "swapPairAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "name": "generateVsErc20PoolID",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "name": "generateVsEthPoolID",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getVsBondPool",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondMakerInterface",
+                "name": "bondMakerForUserAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract VolatilityOracleInterface",
+                "name": "volatilityOracle",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerForUserAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getVsErc20Pool",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ERC20",
+                "name": "swapPairAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "swapPairOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getVsEthPool",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "ethOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBondSale",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "bondIDs",
+                "type": "bytes32[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maturityBorder",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "totalBondAllowance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "allowanceInDollarsE8",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "contract VolatilityOracleInterface",
+                "name": "volatilityOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerForUserAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            }
+        ],
+        "name": "updateVsBondPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "swapPairOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            }
+        ],
+        "name": "updateVsErc20Pool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "ethOracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BondPricerInterface",
+                "name": "bondPricerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "int16",
+                "name": "feeBaseE4",
+                "type": "int16"
+            }
+        ],
+        "name": "updateVsEthPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "volumeCalculatorAddress",
+        "outputs": [
+            {
+                "internalType": "contract LatestPriceOracleInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawEth",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

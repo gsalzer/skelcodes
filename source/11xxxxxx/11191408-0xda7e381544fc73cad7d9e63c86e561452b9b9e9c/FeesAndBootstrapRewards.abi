@@ -1,0 +1,1054 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract IContractRegistry",
+                "name": "_contractRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_registryAdmin",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_feesToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_bootstrapToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "generalCommitteeAnnualBootstrap",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "certifiedCommitteeAnnualBootstrap",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "allocatedGeneralBootstrapRewards",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "generalBootstrapRewardsPerMember",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "allocatedCertifiedBootstrapRewards",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "certifiedBootstrapRewardsPerMember",
+                "type": "uint256"
+            }
+        ],
+        "name": "BootstrapRewardsAllocated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalAwarded",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "certification",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bootstrapPerMember",
+                "type": "uint256"
+            }
+        ],
+        "name": "BootstrapRewardsAssigned",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalWithdrawn",
+                "type": "uint256"
+            }
+        ],
+        "name": "BootstrapRewardsWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "certifiedCommitteeAnnualBootstrap",
+                "type": "uint256"
+            }
+        ],
+        "name": "CertifiedCommitteeAnnualBootstrapChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "name": "ContractRegistryAddressUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "EmergencyWithdrawal",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "allocatedGeneralFees",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "generalFeesPerMember",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "allocatedCertifiedFees",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "certifiedFeesPerMember",
+                "type": "uint256"
+            }
+        ],
+        "name": "FeesAllocated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fees",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bootstrapRewards",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "toRewardsContract",
+                "type": "address"
+            }
+        ],
+        "name": "FeesAndBootstrapRewardsBalanceMigrated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fees",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bootstrapRewards",
+                "type": "uint256"
+            }
+        ],
+        "name": "FeesAndBootstrapRewardsBalanceMigrationAccepted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalAwarded",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "certification",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "feesPerMember",
+                "type": "uint256"
+            }
+        ],
+        "name": "FeesAssigned",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalWithdrawn",
+                "type": "uint256"
+            }
+        ],
+        "name": "FeesWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "generalCommitteeAnnualBootstrap",
+                "type": "uint256"
+            }
+        ],
+        "name": "GeneralCommitteeAnnualBootstrapChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "InitializationComplete",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Locked",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousRegistryAdmin",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newRegistryAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "RegistryManagementTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "startTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "RewardDistributionActivated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "RewardDistributionDeactivated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Unlocked",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "guardians",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "fees",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalFees",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "bootstrap",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalBootstrap",
+                "type": "uint256"
+            }
+        ],
+        "name": "acceptRewardsBalanceMigration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "startTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "activateRewardDistribution",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "bootstrapToken",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimRegistryManagement",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "inCommittee",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isCertified",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "nextCertification",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "generalCommitteeSize",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "certifiedCommitteeSize",
+                "type": "uint256"
+            }
+        ],
+        "name": "committeeMembershipWillChange",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "deactivateRewardDistribution",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "erc20",
+                "type": "address"
+            }
+        ],
+        "name": "emergencyWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "duration",
+                "type": "uint256"
+            }
+        ],
+        "name": "estimateFutureFeesAndBootstrapRewards",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "estimatedFees",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "estimatedBootstrapRewards",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "feesAndBootstrap",
+        "outputs": [
+            {
+                "internalType": "uint96",
+                "name": "feeBalance",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "bootstrapBalance",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "lastFeesPerMember",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "lastBootstrapPerMember",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "withdrawnFees",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "withdrawnBootstrap",
+                "type": "uint96"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feesAndBootstrapState",
+        "outputs": [
+            {
+                "internalType": "uint96",
+                "name": "certifiedFeesPerMember",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "generalFeesPerMember",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "certifiedBootstrapPerMember",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint96",
+                "name": "generalBootstrapPerMember",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint32",
+                "name": "lastAssigned",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feesToken",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCertifiedCommitteeAnnualBootstrap",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getContractRegistry",
+        "outputs": [
+            {
+                "internalType": "contract IContractRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            }
+        ],
+        "name": "getFeesAndBootstrapBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "feeBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "bootstrapBalance",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            }
+        ],
+        "name": "getFeesAndBootstrapData",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "feeBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastFeesPerMember",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "bootstrapBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastBootstrapPerMember",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawnFees",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawnBootstrap",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "certified",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getFeesAndBootstrapState",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "certifiedFeesPerMember",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "generalFeesPerMember",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "certifiedBootstrapPerMember",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "generalBootstrapPerMember",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastAssigned",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getGeneralCommitteeAnnualBootstrap",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSettings",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "generalCommitteeAnnualBootstrap",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "certifiedCommitteeAnnualBootstrap",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "rewardAllocationActive",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "initializationAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "initializationComplete",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isInitializationComplete",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isLocked",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isRegistryAdmin",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isRewardAllocationActive",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lock",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "locked",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "guardians",
+                "type": "address[]"
+            }
+        ],
+        "name": "migrateRewardsBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pendingRegistryAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "refreshContracts",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "registryAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceRegistryManagement",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "annualAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setCertifiedCommitteeAnnualBootstrap",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IContractRegistry",
+                "name": "newContractRegistry",
+                "type": "address"
+            }
+        ],
+        "name": "setContractRegistry",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "annualAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setGeneralCommitteeAnnualBootstrap",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_registryAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "setRegistryAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newRegistryAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "transferRegistryManagement",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unlock",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawBootstrapFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "guardian",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

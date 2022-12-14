@@ -1,0 +1,754 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "bondMakerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "IDOLAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxPriceIndex",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxBoardIndex",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxBoardIndexAtEndPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxBidCountPerAddress",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "settledAmount",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "paidIDOL",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "rewardedSBT",
+                "type": "uint64"
+            }
+        ],
+        "name": "LogAuctionInfoDiff",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "bidder",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "memo",
+                "type": "bytes"
+            }
+        ],
+        "name": "LogBidMemo",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "bidder",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "bidPrice",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "boardIndex",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "targetSBTAmount",
+                "type": "uint64"
+            }
+        ],
+        "name": "LogInsertBoard",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "bidPrice",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint256",
+                "name": "boardIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "auctionBoard",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "amount",
+                "type": "uint64"
+            },
+            {
+                "internalType": "address",
+                "name": "bidder",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "auctionDisposalInfo",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "solidStrikePriceIDOLForUnrevealedE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "solidStrikePriceIDOLForRestWinnersE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "bool",
+                "name": "isEndInfoCreated",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isForceToFinalizeWinnerAmountTriggered",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isPriceSorted",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "auctionInfo",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "auctionSettledTotalE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "auctionRewardedTotalE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "auctionPaidTotalE8",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "auctionParticipantInfo",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "auctionLockedIDOLAmountE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint16",
+                "name": "bidCount",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "auctionRevealInfo",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "totalSBTAmountBid",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "totalIDOLSecret",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "totalIDOLRevealed",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint16",
+                "name": "auctionPriceCount",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "auctionSecret",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint64",
+                "name": "amount",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "IDOLamount",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "secret",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "targetSBTAmount",
+                "type": "uint64"
+            },
+            {
+                "internalType": "bytes",
+                "name": "memo",
+                "type": "bytes"
+            }
+        ],
+        "name": "bidWithMemo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "winnerAmount",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "myLowestPrice",
+                "type": "uint64"
+            }
+        ],
+        "name": "calcBill",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "winnerAmount",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64[]",
+                "name": "myLoseBids",
+                "type": "uint64[]"
+            }
+        ],
+        "name": "calcMyLowestPrice",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "myLowestPrice",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            }
+        ],
+        "name": "deleteParticipantInfo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "priceE8",
+                "type": "uint64"
+            }
+        ],
+        "name": "discretizeBidPrice",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64[]",
+                "name": "bids",
+                "type": "uint64[]"
+            },
+            {
+                "internalType": "uint64",
+                "name": "random",
+                "type": "uint64"
+            }
+        ],
+        "name": "generateMultiSecret",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "secret",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "bidder",
+                "type": "address"
+            }
+        ],
+        "name": "getBidderStatus",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "toBack",
+                "type": "uint64"
+            },
+            {
+                "internalType": "bool",
+                "name": "isIDOLReturned",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "price",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "boardIndex",
+                "type": "uint64"
+            }
+        ],
+        "name": "getBoard",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "bidder",
+                "type": "address"
+            },
+            {
+                "internalType": "uint64",
+                "name": "amount",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getBoardStatus",
+        "outputs": [
+            {
+                "internalType": "uint64[]",
+                "name": "boardStatus",
+                "type": "uint64[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getEndInfo",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "price",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "boardIndex",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "loseSBTAmount",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "auctionEndPriceWinnerSBTAmount",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getSortedBidPrice",
+        "outputs": [
+            {
+                "internalType": "uint64[]",
+                "name": "",
+                "type": "uint64[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getUnsortedBidPrice",
+        "outputs": [
+            {
+                "internalType": "uint64[]",
+                "name": "",
+                "type": "uint64[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            }
+        ],
+        "name": "makeEndInfo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "secret",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "subtractAmount",
+                "type": "uint64"
+            }
+        ],
+        "name": "removeSecret",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64[]",
+                "name": "bids",
+                "type": "uint64[]"
+            },
+            {
+                "internalType": "uint64",
+                "name": "random",
+                "type": "uint64"
+            }
+        ],
+        "name": "revealBids",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "contractAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setAuctionContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64[]",
+                "name": "sortedPrice",
+                "type": "uint64[]"
+            }
+        ],
+        "name": "sortBidPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "auctionID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "settledAmountE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "paidIDOLE8",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "rewardedSBTE8",
+                "type": "uint64"
+            }
+        ],
+        "name": "updateAuctionInfo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

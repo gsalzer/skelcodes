@@ -1,0 +1,732 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_pool",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_poolWrapper",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_wrapperFactory",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_weightsStrategy",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes4",
+                "name": "inputSig",
+                "type": "bytes4"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "inputData",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "outputData",
+                "type": "bytes"
+            }
+        ],
+        "name": "CallPool",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "underlyingToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "piToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "router",
+                "type": "address"
+            }
+        ],
+        "name": "CreatePiToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "ReplacePoolTokenFinish",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "migrator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "denormalizedWeight",
+                "type": "uint256"
+            }
+        ],
+        "name": "ReplacePoolTokenWithNewVersion",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "underlyingToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "piToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "denormalizedWeight",
+                "type": "uint256"
+            }
+        ],
+        "name": "ReplacePoolTokenWithPiToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "piTokenFactory",
+                "type": "address"
+            }
+        ],
+        "name": "SetPiTokenFactory",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "poolWrapper",
+                "type": "address"
+            }
+        ],
+        "name": "SetPoolWrapper",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "weightsStrategy",
+                "type": "address"
+            }
+        ],
+        "name": "SetWeightsStrategy",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "BIND_SIG",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "CALL_VOTING_SIG",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "UNBIND_SIG",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "targetDenorm",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fromTimestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "targetTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "bind",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "signature",
+                "type": "bytes4"
+            },
+            {
+                "internalType": "bytes",
+                "name": "args",
+                "type": "bytes"
+            }
+        ],
+        "name": "callPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "voting",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes4",
+                "name": "signature",
+                "type": "bytes4"
+            },
+            {
+                "internalType": "bytes",
+                "name": "args",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "callVotingByPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_underlyingToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_routerFactory",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_routerArgs",
+                "type": "bytes"
+            },
+            {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            }
+        ],
+        "name": "createPiToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newController",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "addressesToMigrate",
+                "type": "address[]"
+            }
+        ],
+        "name": "migrateController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "piTokenFactory",
+        "outputs": [
+            {
+                "internalType": "contract WrappedPiErc20FactoryInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pool",
+        "outputs": [
+            {
+                "internalType": "contract PowerIndexPoolInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "poolWrapper",
+        "outputs": [
+            {
+                "internalType": "contract PowerIndexWrapperInterface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_underlyingToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract WrappedPiErc20Interface",
+                "name": "_piToken",
+                "type": "address"
+            }
+        ],
+        "name": "replacePoolTokenWithExistingPiToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_underlyingToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_routerFactory",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_routerArgs",
+                "type": "bytes"
+            },
+            {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            }
+        ],
+        "name": "replacePoolTokenWithNewPiToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_oldToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_newToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_migrator",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_migratorData",
+                "type": "bytes"
+            }
+        ],
+        "name": "replacePoolTokenWithNewVersion",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "oldToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "newToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fromTimestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "targetTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "replaceTokenWithNew",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "oldToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "newToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "durationFromNow",
+                "type": "uint256"
+            }
+        ],
+        "name": "replaceTokenWithNewFromNow",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetDenorm",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fromTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetTimestamp",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct PowerIndexPoolController.DynamicWeightInput[]",
+                "name": "_dynamicWeights",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setDynamicWeightList",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetDenorm",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fromTimestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetTimestamp",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct PowerIndexPoolController.DynamicWeightInput[]",
+                "name": "_dynamicWeights",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setDynamicWeightListByStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_piTokenFactory",
+                "type": "address"
+            }
+        ],
+        "name": "setPiTokenFactory",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_poolWrapper",
+                "type": "address"
+            }
+        ],
+        "name": "setPoolWrapper",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_weightsStrategy",
+                "type": "address"
+            }
+        ],
+        "name": "setWeightsStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "unbindNotActualToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "weightsStrategy",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

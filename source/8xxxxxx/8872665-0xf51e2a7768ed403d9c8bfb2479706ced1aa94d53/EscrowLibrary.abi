@@ -1,0 +1,495 @@
+[
+    {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum EscrowLibrary.EscrowCloseReason",
+                "name": "reason",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "closingSighash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "EscrowClosed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountFunded",
+                "type": "uint256"
+            }
+        ],
+        "name": "EscrowFunded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            }
+        ],
+        "name": "EscrowOpened",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "reserveAddress",
+                "type": "address"
+            }
+        ],
+        "name": "FundsTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "preimage",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "puzzleSighash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "Preimage",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "puzzleSighash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "PuzzlePosted",
+        "type": "event"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountTraded",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "eSig",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "pSig",
+                "type": "bytes"
+            }
+        ],
+        "name": "cashout",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            }
+        ],
+        "name": "checkFunded",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "escrowFactory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "escrows",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "escrowAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "escrowTimelock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address payable",
+                "name": "escrowerReserve",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "escrowerTrade",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "escrowerRefund",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "payeeReserve",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "payeeTrade",
+                "type": "address"
+            },
+            {
+                "internalType": "enum EscrowLibrary.EscrowState",
+                "name": "escrowState",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "escrowerBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "payeeBalance",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            }
+        ],
+        "name": "forceRefund",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrow",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "escrowAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "timelock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address payable",
+                "name": "escrowerReserve",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "escrowerTrade",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "escrowerRefund",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "payeeReserve",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "payeeTrade",
+                "type": "address"
+            }
+        ],
+        "name": "newEscrow",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            }
+        ],
+        "name": "openEscrow",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "prevAmountTraded",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tradeAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "puzzle",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "puzzleTimelock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "eSig",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "pSig",
+                "type": "bytes"
+            }
+        ],
+        "name": "postPuzzle",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "puzzles",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "tradeAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "puzzle",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "puzzleTimelock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "puzzleSighash",
+                "type": "bytes32"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountTraded",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "eSig",
+                "type": "bytes"
+            }
+        ],
+        "name": "refund",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            }
+        ],
+        "name": "refundPuzzle",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "preimage",
+                "type": "bytes32"
+            }
+        ],
+        "name": "solvePuzzle",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "escrowAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "escrower",
+                "type": "bool"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

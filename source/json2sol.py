@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 
-import json,sys,os,traceback,re
+import json,sys,os,traceback,re,glob
 
 def main():
-    if len(sys.argv) > 2:
-        print(f"Usage: {sys.argv[0]} <path to json file>")
-        print(f"       cat <file with paths> | {sys.argv[0]}")
+    if len(sys.argv) != 2:
+        print(f"Usage: python3 json2sol.py <dir with json files>")
         return 1
-    if len(sys.argv) == 2:
-        json2sol(sys.argv[1])
-    else:
-        for line in sys.stdin:
-            json2sol(line.rstrip('\n'))
+    for fn in glob.glob(f"{sys.argv[1]}/**/*.json", recursive=True):
+        json2sol(fn)
 
 def json2sol(fn):
     if not fn.endswith(".json"):
@@ -37,6 +33,11 @@ def json2sol(fn):
     result = results[0]
     assert 'SourceCode' in result and result['SourceCode'] != ''
     sourceCode = result['SourceCode']
+    contractName = result.get('ContractName',os.path.basename(dn))
+
+    with open(f"{dn}/{contractName}.abi", 'w') as f:
+        json.dump(json.loads(result["ABI"]), f, indent=4, sort_keys=True)
+
     if sourceCode.startswith('{{'):
         try:
             sources = json.loads(sourceCode[1:-1], strict=False)
@@ -69,12 +70,11 @@ def json2sol(fn):
             with open(f"{dn}/{path}", 'w') as f:
                 f.write(content['content'].replace('\r','')+"\n")
     else:
-        contractName = result.get('ContractName',os.path.basename(dn))
         if result.get('CompilerVersion','').startswith('vyper'):
             ext = 'vy'
         else:
             ext = 'sol'
-        with open(f"{dn}/{contractName}.sol", 'w') as f:
+        with open(f"{dn}/{contractName}.{ext}", 'w') as f:
                 f.write(sourceCode.replace('\r','')+"\n")
 
 if __name__ == '__main__':

@@ -1,0 +1,1862 @@
+[
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "withdrawalLiveness",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "collateralAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "tokenAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "finderAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "bytes32",
+                                "name": "priceFeedIdentifier",
+                                "type": "bytes32"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "rawValue",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct FixedPoint.Unsigned",
+                                "name": "minSponsorTokens",
+                                "type": "tuple"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "timerAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "excessTokenBeneficiary",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "version",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "contract ISynthereumFinder",
+                                "name": "synthereumFinder",
+                                "type": "address"
+                            }
+                        ],
+                        "internalType": "struct SelfMintingPerpetualPositionManagerMultiParty.PositionManagerParams",
+                        "name": "positionManagerParams",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "liquidationLiveness",
+                                "type": "uint256"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "rawValue",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct FixedPoint.Unsigned",
+                                "name": "collateralRequirement",
+                                "type": "tuple"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "rawValue",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct FixedPoint.Unsigned",
+                                "name": "disputeBondPct",
+                                "type": "tuple"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "rawValue",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct FixedPoint.Unsigned",
+                                "name": "sponsorDisputeRewardPct",
+                                "type": "tuple"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "rawValue",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct FixedPoint.Unsigned",
+                                "name": "disputerDisputeRewardPct",
+                                "type": "tuple"
+                            }
+                        ],
+                        "internalType": "struct SelfMintingPerpetualLiquidatableMultiParty.LiquidatableParams",
+                        "name": "liquidatableParams",
+                        "type": "tuple"
+                    }
+                ],
+                "internalType": "struct SelfMintingPerpetualLiquidatableMultiParty.ConstructorParams",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Deposit",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "disputer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "disputeSucceeded",
+                "type": "bool"
+            }
+        ],
+        "name": "DisputeSettled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "shutdownTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "EmergencyShutdown",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "EndedSponsorPosition",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "FinalFeesPaid",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokensOutstanding",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "lockedCollateral",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "liquidatedCollateral",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "liquidationTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "LiquidationCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "disputer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "disputeBondAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "LiquidationDisputed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "paidToLiquidator",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "paidToDisputer",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "paidToSponsor",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "enum SelfMintingPerpetualLiquidatableMultiParty.Status",
+                "name": "liquidationStatus",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "settlementPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "LiquidationWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "NewSponsor",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "feeAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "PositionCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "feeAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Redeem",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "regularFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "lateFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "RegularFeesPaid",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "numTokensRepaid",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "newTokenCount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "feeAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Repay",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RequestWithdrawal",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RequestWithdrawalCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RequestWithdrawalExecuted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralReturned",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokensBurned",
+                "type": "uint256"
+            }
+        ],
+        "name": "SettleEmergencyShutdown",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Withdrawal",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "numTokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculateDaoFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cancelWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "capDepositRatio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "capDeposit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "capMintAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "capMint",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collateralCurrency",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "collateral",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "numTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feePercentage",
+                "type": "uint256"
+            }
+        ],
+        "name": "create",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "daoFeeAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "minCollateralPerToken",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "maxCollateralPerToken",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "maxTokensToLiquidate",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+            }
+        ],
+        "name": "createLiquidation",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "tokensLiquidated",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "finalFeeBond",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "daoFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "feePercentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "feeRecipient",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "deleteLiquidation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "deleteSponsorPosition",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "depositTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "dispute",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "totalPaid",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "emergencyShutdown",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "emergencyShutdownPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feePayerData",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "collateralCurrency",
+                "type": "address"
+            },
+            {
+                "internalType": "contract FinderInterface",
+                "name": "finder",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastPaymentTime",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "cumulativeFeeMultiplier",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "getCollateral",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "collateralAmount",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "getLiquidations",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "sponsor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "liquidator",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum SelfMintingPerpetualLiquidatableMultiParty.Status",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "liquidationTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "tokensOutstanding",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "lockedCollateral",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "liquidatedCollateral",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "rawUnitCollateral",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "disputer",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "settlementPrice",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "finalFee",
+                        "type": "tuple"
+                    }
+                ],
+                "internalType": "struct SelfMintingPerpetualLiquidatableMultiParty.LiquidationData[]",
+                "name": "liquidationData",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "globalPositionData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "totalTokensOutstanding",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "rawTotalPositionCollateral",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "liquidatableData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "rawLiquidationCollateral",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "liquidationLiveness",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "collateralRequirement",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "disputeBondPct",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "sponsorDisputeRewardPct",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "disputerDisputeRewardPct",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "liquidations",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "liquidator",
+                "type": "address"
+            },
+            {
+                "internalType": "enum SelfMintingPerpetualLiquidatableMultiParty.Status",
+                "name": "state",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "liquidationTime",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "tokensOutstanding",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "lockedCollateral",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "liquidatedCollateral",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "rawUnitCollateral",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address",
+                "name": "disputer",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "settlementPrice",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "finalFee",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "payer",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "amount",
+                "type": "tuple"
+            }
+        ],
+        "name": "payFinalFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "payRegularFees",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "totalPaid",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pfc",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "positionManagerData",
+        "outputs": [
+            {
+                "internalType": "contract ISynthereumFinder",
+                "name": "synthereumFinder",
+                "type": "address"
+            },
+            {
+                "internalType": "contract MintableBurnableIERC20",
+                "name": "tokenCurrency",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "priceIdentifier",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawalLiveness",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "minSponsorTokens",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "emergencyShutdownPrice",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "emergencyShutdownTimestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "excessTokenBeneficiary",
+                "type": "address"
+            },
+            {
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "positions",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "tokensOutstanding",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawalRequestPassTimestamp",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "withdrawalRequestAmount",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rawValue",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedPoint.Unsigned",
+                "name": "rawCollateral",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceIdentifier",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "identifier",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "numTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feePercentage",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeem",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountWithdrawn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "daoFeeAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "remargin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "numTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feePercentage",
+                "type": "uint256"
+            }
+        ],
+        "name": "repay",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "daoFeeAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "requestWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "setCurrentTime",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "settleEmergencyShutdown",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountWithdrawn",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "synthereumFinder",
+        "outputs": [
+            {
+                "internalType": "contract ISynthereumFinder",
+                "name": "finder",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "syntheticTokenSymbol",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "timerAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenCurrency",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "synthToken",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalPositionCollateral",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalTokensOutstanding",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "trimExcess",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "contractVersion",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "collateralAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountWithdrawn",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "liquidationId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawLiquidation",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "payToSponsor",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "payToLiquidator",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "payToDisputer",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "paidToSponsor",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "paidToLiquidator",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "rawValue",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct FixedPoint.Unsigned",
+                        "name": "paidToDisputer",
+                        "type": "tuple"
+                    }
+                ],
+                "internalType": "struct SelfMintingPerpetualLiquidatableMultiParty.RewardsData",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawPassedRequest",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountWithdrawn",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

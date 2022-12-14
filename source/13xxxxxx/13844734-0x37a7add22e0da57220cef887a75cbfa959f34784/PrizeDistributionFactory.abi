@@ -1,0 +1,571 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IPrizeTierHistory",
+                "name": "_prizeTierHistory",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IDrawBuffer",
+                "name": "_drawBuffer",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IPrizeDistributionBuffer",
+                "name": "_prizeDistributionBuffer",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ITicket",
+                "name": "_ticket",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minPickCost",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousManager",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newManager",
+                "type": "address"
+            }
+        ],
+        "name": "ManagerTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "pendingOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipOffered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "drawId",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalNetworkTicketSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "PrizeDistributionPushed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "drawId",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalNetworkTicketSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "PrizeDistributionSet",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_drawId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalNetworkTicketSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculatePrizeDistribution",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "bitRangeSize",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "matchCardinality",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "endTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "maxPicksPerUser",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expiryDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint104",
+                        "name": "numberOfPicks",
+                        "type": "uint104"
+                    },
+                    {
+                        "internalType": "uint32[16]",
+                        "name": "tiers",
+                        "type": "uint32[16]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "prize",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPrizeDistributionBuffer.PrizeDistribution",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_drawId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalNetworkTicketSupply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_beaconPeriodSeconds",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint64",
+                "name": "_drawTimestamp",
+                "type": "uint64"
+            }
+        ],
+        "name": "calculatePrizeDistributionWithDrawData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "bitRangeSize",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "matchCardinality",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "endTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "maxPicksPerUser",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expiryDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint104",
+                        "name": "numberOfPicks",
+                        "type": "uint104"
+                    },
+                    {
+                        "internalType": "uint32[16]",
+                        "name": "tiers",
+                        "type": "uint32[16]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "prize",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPrizeDistributionBuffer.PrizeDistribution",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "drawBuffer",
+        "outputs": [
+            {
+                "internalType": "contract IDrawBuffer",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "manager",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minPickCost",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pendingOwner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "prizeDistributionBuffer",
+        "outputs": [
+            {
+                "internalType": "contract IPrizeDistributionBuffer",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "prizeTierHistory",
+        "outputs": [
+            {
+                "internalType": "contract IPrizeTierHistory",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_drawId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalNetworkTicketSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "pushPrizeDistribution",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "bitRangeSize",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "matchCardinality",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "endTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "maxPicksPerUser",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expiryDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint104",
+                        "name": "numberOfPicks",
+                        "type": "uint104"
+                    },
+                    {
+                        "internalType": "uint32[16]",
+                        "name": "tiers",
+                        "type": "uint32[16]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "prize",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPrizeDistributionBuffer.PrizeDistribution",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_newManager",
+                "type": "address"
+            }
+        ],
+        "name": "setManager",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_drawId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalNetworkTicketSupply",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPrizeDistribution",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "bitRangeSize",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "matchCardinality",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "endTimestampOffset",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "maxPicksPerUser",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expiryDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint104",
+                        "name": "numberOfPicks",
+                        "type": "uint104"
+                    },
+                    {
+                        "internalType": "uint32[16]",
+                        "name": "tiers",
+                        "type": "uint32[16]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "prize",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPrizeDistributionBuffer.PrizeDistribution",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ticket",
+        "outputs": [
+            {
+                "internalType": "contract ITicket",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

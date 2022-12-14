@@ -1,0 +1,1433 @@
+[
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "multisig",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "baseCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "timelock",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vision",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "commit",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "right",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stableReserve",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "contributionBoard",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "marketplace",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "dividendPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "voteCounter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "workersUnion",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "visionEmitter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "votingEscrow",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Project.DAO",
+                "name": "controller",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "pool2Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "weth",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "sablier",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20StakeMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20BurnMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc721StakeMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc1155StakeMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc1155BurnMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "initialContributorShareFactory",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Project.CommonContracts",
+                "name": "commons",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "approved",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "DAOLaunched",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "daoId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "NewProject",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "from",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "to",
+                "type": "uint256"
+            }
+        ],
+        "name": "ProjectMoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Recovered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "approve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "baseURI",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "newMultisig",
+                "type": "address"
+            }
+        ],
+        "name": "changeMultisig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "daoId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "uri",
+                "type": "string"
+            }
+        ],
+        "name": "createProject",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "daoOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "daoId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            }
+        ],
+        "name": "disable",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            }
+        ],
+        "name": "disablePermanently",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            }
+        ],
+        "name": "enable",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAllDAOs",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getApproved",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCommons",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "pool2Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "weth",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "sablier",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20StakeMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20BurnMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc721StakeMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc1155StakeMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc1155BurnMiningV1Factory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "initialContributorShareFactory",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Project.CommonContracts",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getController",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "multisig",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "baseCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "timelock",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vision",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "commit",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "right",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stableReserve",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "contributionBoard",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "marketplace",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "dividendPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "voteCounter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "workersUnion",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "visionEmitter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "votingEscrow",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Project.DAO",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDAO",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "multisig",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "baseCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "timelock",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vision",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "commit",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "right",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stableReserve",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "contributionBoard",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "marketplace",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "dividendPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "voteCounter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "workersUnion",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "visionEmitter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "votingEscrow",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Project.DAO",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getMasterDAO",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "multisig",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "baseCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "timelock",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vision",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "commit",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "right",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stableReserve",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "contributionBoard",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "marketplace",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "dividendPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "voteCounter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "workersUnion",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "visionEmitter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "votingEscrow",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Project.DAO",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "growth",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "immortalize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "immortalized",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recoverer",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "disableList",
+                "type": "address[]"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "name": "isApprovedForAll",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "liquidityMiningRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "commitMiningRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "treasury",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "caller",
+                "type": "uint256"
+            }
+        ],
+        "name": "launch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "nameOf",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "nonRecoverable",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "ownerOf",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "permanentlyNonRecoverable",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "daoId",
+                "type": "uint256"
+            }
+        ],
+        "name": "projectsOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "len",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "daoId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "projectsOfDAOByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "recoverERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "recoverer",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "name": "setApprovalForAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recoverer",
+                "type": "address"
+            }
+        ],
+        "name": "setRecoverer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "symbolOf",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenOfOwnerByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenURI",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "uri",
+                "type": "string"
+            }
+        ],
+        "name": "updateURI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "multisig",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "treasury",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "baseCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "projectName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "projectSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "visionName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "visionSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "commitName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "commitSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "rightName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "rightSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "emissionStartDelay",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minDelay",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "voteLaunchDelay",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "initialEmission",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minEmissionRatePerWeek",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "emissionCutRate",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "founderShare",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Project.CloneParams",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "upgradeToDAO",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

@@ -1,0 +1,598 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocolFactory",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IBFactory",
+                "name": "_bFactory",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "poolAddr",
+                "type": "address"
+            }
+        ],
+        "name": "AddLiquidity",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_oldClaimWeight",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_oldNoclaimWeight",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_newClaimWeight",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_newNoclaimWeight",
+                "type": "uint256"
+            }
+        ],
+        "name": "CovTokenWeightsUpdate",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "covtoken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "pairedToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "poolAddr",
+                "type": "address"
+            }
+        ],
+        "name": "PoolUpdate",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "poolAddr",
+                "type": "address"
+            }
+        ],
+        "name": "RemoveLiquidity",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            }
+        ],
+        "name": "RolloverCover",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_oldClaimSwapFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_oldNoclaimSwapFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_newClaimSwapFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_newNoclaimSwapFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapFeeUpdate",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "TOTAL_WEIGHT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IProtocol",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_collateral",
+                "type": "address"
+            },
+            {
+                "internalType": "uint48",
+                "name": "_timestamp",
+                "type": "uint48"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_pairedToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_claimPTAmt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_noclaimPTAmt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_addBuffer",
+                "type": "bool"
+            }
+        ],
+        "name": "addCoverAndAddLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ICoverERC20",
+                "name": "_covToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_covTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_pairedToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_pairedTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_addBuffer",
+                "type": "bool"
+            }
+        ],
+        "name": "addLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "bFactory",
+        "outputs": [
+            {
+                "internalType": "contract IBFactory",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimCovTokenWeight",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimSwapFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ICoverERC20",
+                "name": "_covToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_covTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_pairedToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_pairedTokenAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "createNewPool",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "noclaimCovTokenWeight",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "noclaimSwapFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_covToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_pairedToken",
+                "type": "address"
+            }
+        ],
+        "name": "poolForPair",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "protocolFactory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ICoverERC20",
+                "name": "_covToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_pairedToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_bptAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "removeLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_cover",
+                "type": "address"
+            },
+            {
+                "internalType": "uint48",
+                "name": "_newTimestamp",
+                "type": "uint48"
+            }
+        ],
+        "name": "rollover",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ICover",
+                "name": "_cover",
+                "type": "address"
+            },
+            {
+                "internalType": "uint48",
+                "name": "_newTimestamp",
+                "type": "uint48"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_pairedToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_claimPTAmt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_noclaimPTAmt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_addBuffer",
+                "type": "bool"
+            }
+        ],
+        "name": "rolloverAndAddLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_claimCovTokenWeight",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_noclaimCovTokenWeight",
+                "type": "uint256"
+            }
+        ],
+        "name": "setCovTokenWeights",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_covToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_pairedToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_newPool",
+                "type": "address"
+            }
+        ],
+        "name": "setPoolForPair",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_covTokens",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_pairedTokens",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_newPools",
+                "type": "address[]"
+            }
+        ],
+        "name": "setPoolsForPairs",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_claimSwapFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_noclaimSwapFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setSwapFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

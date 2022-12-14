@@ -1,0 +1,760 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_registry",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_primaryCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_primarySystemSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_secondaryCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_secondarySellerSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_secondarySystemSplit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "auctionID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "auctionName",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "auctionContract",
+                "type": "address"
+            }
+        ],
+        "name": "AuctionRegistered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "auctionID",
+                "type": "uint256"
+            }
+        ],
+        "name": "AuctionRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "auctionID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldAuctionContract",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAuctionContract",
+                "type": "address"
+            }
+        ],
+        "name": "AuctionUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldSystemSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newSystemSplit",
+                "type": "uint256"
+            }
+        ],
+        "name": "FirstSaleSplitUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "requester",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenID",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "LotRequested",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "lotID",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "auctionID",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "auction",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IHub.LotStatus",
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "name": "LotStatusChange",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldSellerSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newSellerSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldSystemSplit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newSystemSplit",
+                "type": "uint256"
+            }
+        ],
+        "name": "SecondarySalesSplitUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelLot",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "firstSaleCompleted",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAuctionCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_auction",
+                "type": "address"
+            }
+        ],
+        "name": "getAuctionID",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAuctionInformation",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "active",
+                "type": "bool"
+            },
+            {
+                "internalType": "string",
+                "name": "auctionName",
+                "type": "string"
+            },
+            {
+                "internalType": "address",
+                "name": "auctionContract",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "onlyPrimarySales",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getFirstSaleSplit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "creatorSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "systemSplit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "getLotInformation",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum IHub.LotStatus",
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getScalingFactor",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSecondarySaleSplits",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "creatorSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "sellerSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "systemSplit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "init",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            }
+        ],
+        "name": "isAuctionActive",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isAuctionHubImplementation",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "isFirstSale",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "lotAuctionCompleted",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "lotAuctionCompletedAndClaimed",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "lotAuctionStarted",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lotID",
+                "type": "uint256"
+            }
+        ],
+        "name": "lotCreated",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            }
+        ],
+        "name": "pauseAuction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "address",
+                "name": "_auctionInstance",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_onlyPrimarySales",
+                "type": "bool"
+            }
+        ],
+        "name": "registerAuction",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "auctionID",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            }
+        ],
+        "name": "removeAuction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionType",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "requestAuctionLot",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "lotID",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_auctionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_newImplementation",
+                "type": "address"
+            }
+        ],
+        "name": "updateAuctionInstance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_newCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_newSystemSplit",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateFirstSaleSplit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_newCreatorSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_newSellerSplit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_newSystemSplit",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateSecondarySalesSplit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

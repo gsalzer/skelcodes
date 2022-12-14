@@ -1,0 +1,1618 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "_platformToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_platformFeePercent",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IPriceProvider",
+                "name": "_priceProvider",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IBackedPriceProvider",
+                "name": "_backedPriceProvider",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "percent",
+                "type": "uint256"
+            }
+        ],
+        "name": "BurnPercentSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "secondParticipant",
+                "type": "address"
+            }
+        ],
+        "name": "OfferAccepted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "OfferCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "OfferPlaced",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "percent",
+                "type": "uint256"
+            }
+        ],
+        "name": "PlatformFeePercentSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "PlatformFeeWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "initiator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum Backed.ParticipantType",
+                "name": "initiatorType",
+                "type": "uint8"
+            }
+        ],
+        "name": "PolicyTerminated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sourceAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "PremiumDeposited",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "PremiumWithdrawn",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "BurnPercent",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "IsLocked",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_premiumAmountToDeposit",
+                "type": "uint256"
+            }
+        ],
+        "name": "acceptOfferByInsured",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "acceptOfferByInsurer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "name": "assetPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "backedPriceProvider",
+        "outputs": [
+            {
+                "internalType": "contract IBackedPriceProvider",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_asset",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_baseCurrency",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_premiumPercent",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_insuredAssetAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_period",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculatePlatformFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_terminator",
+                "type": "address"
+            }
+        ],
+        "name": "calculateTerminationResult",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "lossCoverageInsuredWithdraw",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lossCoverageInsurerWithdraw",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "premium_available_to_insured_for_withdrawal",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "premium_available_to_insurer_for_withdrawal",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "insurer",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "insured",
+                "type": "address"
+            },
+            {
+                "internalType": "enum Backed.ParticipantType",
+                "name": "initiator",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelOffer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelOfferByInsured",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelOfferByInsurer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentPolicyId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPolicy",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "name": "getPremiumPerWeek",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "isEnoughPremiumUpToCurrentWeekByPolicyId",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "isExpiredByPolicyId",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "pairs",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_asset",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_baseCurrency",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_insuredAssetAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lossCoverage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_premiumPercent",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_period",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_premiumAmountToDeposit",
+                "type": "uint256"
+            }
+        ],
+        "name": "placeOfferByInsured",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_asset",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_baseCurrency",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_insuredAssetAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lossCoverage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_premiumPercent",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_period",
+                "type": "uint256"
+            }
+        ],
+        "name": "placeOfferByInsurer",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "platformFeePercent",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "platformToken",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "policies",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "acceptedTime",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "asset",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "baseCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Backed.ParticipantType",
+                        "name": "participantType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "insuredAssetAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lossCoverage",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumPercent",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "creator",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "period",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.OfferTerms",
+                "name": "offerTerms",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalPremiumDeposited",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum Backed.Status",
+                "name": "status",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "acceptor",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "platformFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "premiumWithdrawn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "originalPrice",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "name": "premiumAvailableInsurerWithdrawal",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_premiumAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "premiumDeposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "premiumWithdraval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceProvider",
+        "outputs": [
+            {
+                "internalType": "contract IPriceProvider",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IBackedPriceProvider",
+                "name": "_backedPriceProvider",
+                "type": "address"
+            }
+        ],
+        "name": "setBackedPriceProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "percent",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBurnPercent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "state",
+                "type": "bool"
+            }
+        ],
+        "name": "setLockedState",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_uniswapPair",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_asset",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_baseERC20",
+                "type": "address"
+            }
+        ],
+        "name": "setPairAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "percent",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPlatformFeePercent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPriceProvider",
+                "name": "_priceProvider",
+                "type": "address"
+            }
+        ],
+        "name": "setPriceProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPriceProvider",
+                "name": "_priceProvider",
+                "type": "address"
+            }
+        ],
+        "name": "setPriceProviderAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_policyId",
+                "type": "uint256"
+            }
+        ],
+        "name": "terminate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            }
+        ],
+        "name": "transferPlatformFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "name": "weekElapsed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "name": "weekElapsedRoundDown",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "acceptedTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "asset",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "baseCurrency",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum Backed.ParticipantType",
+                                "name": "participantType",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "insuredAssetAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "lossCoverage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "premiumPercent",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "creator",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "period",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Backed.OfferTerms",
+                        "name": "offerTerms",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalPremiumDeposited",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum Backed.Status",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "acceptor",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "premiumWithdrawn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "originalPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Backed.Policy",
+                "name": "policy",
+                "type": "tuple"
+            }
+        ],
+        "name": "weekElapsedRoundUp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

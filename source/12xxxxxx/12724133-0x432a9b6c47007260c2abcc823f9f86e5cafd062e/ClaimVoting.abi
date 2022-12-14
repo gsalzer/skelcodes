@@ -1,0 +1,904 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "AnonymouslyVoted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimIndex",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "calculator",
+                "type": "address"
+            }
+        ],
+        "name": "ClaimCalculated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "calculator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bmiAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RewardsForClaimCalculationSent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "voter",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bmiAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RewardsForVoteCalculationSent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimIndex",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "voter",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IClaimVoting.VoteStatus",
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "name": "VoteCalculated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimIndex",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "voter",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "suggestedClaimAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "VoteExposed",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "APPROVAL_PERCENTAGE",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "CALCULATION_REWARD_PER_DAY",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PENALTY_THRESHOLD",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PERCENTAGE_50",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "QUORUM",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "__ClaimVoting_init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "allClaims",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "claimIndex",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "claimer",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "policyBookAddress",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "evidenceURI",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "appeal",
+                                "type": "bool"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "claimAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "time",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct IClaimVoting.PublicClaimInfo",
+                        "name": "publicClaimInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum IClaimingRegistry.ClaimStatus",
+                        "name": "finalVerdict",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "finalClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "bmiCalculationReward",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IClaimVoting.AllClaimInfo[]",
+                "name": "_allClaimsInfo",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "claimIndexes",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "finalHashes",
+                "type": "bytes32[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "encryptedVotes",
+                "type": "string[]"
+            }
+        ],
+        "name": "anonymouslyVoteBatch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "bmiToken",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "claimIndexes",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "calculateVoterResultBatch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "claimIndexes",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "calculateVotingResultBatch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "canVote",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "canWithdraw",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimingRegistry",
+        "outputs": [
+            {
+                "internalType": "contract IClaimingRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "countVotes",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "daiToken",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "claimIndexes",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "suggestedClaimAmounts",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "hashedSignaturesOfClaims",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "exposeVoteBatch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "claimer",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "policyBookAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "evidenceURI",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "coverTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "reinsuranceTokensAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "appeal",
+                "type": "bool"
+            }
+        ],
+        "name": "initializeVoting",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "injector",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "_injector",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "myClaims",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "policyBookAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "evidenceURI",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "appeal",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "claimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum IClaimingRegistry.ClaimStatus",
+                        "name": "finalVerdict",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "finalClaimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "bmiCalculationReward",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IClaimVoting.MyClaimInfo[]",
+                "name": "_myClaimsInfo",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "myVotes",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "claimIndex",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "address",
+                                        "name": "claimer",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "address",
+                                        "name": "policyBookAddress",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "string",
+                                        "name": "evidenceURI",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "internalType": "bool",
+                                        "name": "appeal",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "claimAmount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct IClaimVoting.PublicClaimInfo",
+                                "name": "publicClaimInfo",
+                                "type": "tuple"
+                            },
+                            {
+                                "internalType": "enum IClaimingRegistry.ClaimStatus",
+                                "name": "finalVerdict",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "finalClaimAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "bmiCalculationReward",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct IClaimVoting.AllClaimInfo",
+                        "name": "allClaimInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "encryptedVote",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "suggestedAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "enum IClaimVoting.VoteStatus",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "time",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IClaimVoting.MyVoteInfo[]",
+                "name": "_myVotesInfo",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "myVotesUpdates",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_votesUpdatesCount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_claimIndexes",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "bmiReward",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "daiReward",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "reputationChange",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "stakeChange",
+                        "type": "int256"
+                    }
+                ],
+                "internalType": "struct IClaimVoting.VotesUpdatesInfo",
+                "name": "_myVotesUpdatesInfo",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "policyBookRegistry",
+        "outputs": [
+            {
+                "internalType": "contract IPolicyBookRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceFeed",
+        "outputs": [
+            {
+                "internalType": "contract IPriceFeed",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reinsurancePool",
+        "outputs": [
+            {
+                "internalType": "contract IReinsurancePool",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reputationSystem",
+        "outputs": [
+            {
+                "internalType": "contract IReputationSystem",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IContractsRegistry",
+                "name": "_contractsRegistry",
+                "type": "address"
+            }
+        ],
+        "name": "setDependencies",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_injector",
+                "type": "address"
+            }
+        ],
+        "name": "setInjector",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "vBMI",
+        "outputs": [
+            {
+                "internalType": "contract IVBMI",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "voteStatus",
+        "outputs": [
+            {
+                "internalType": "enum IClaimVoting.VoteStatus",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "whatCanIVoteFor",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_claimsCount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "claimIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "claimer",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "policyBookAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "evidenceURI",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "appeal",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "claimAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "time",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IClaimVoting.PublicClaimInfo[]",
+                "name": "_votablesInfo",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

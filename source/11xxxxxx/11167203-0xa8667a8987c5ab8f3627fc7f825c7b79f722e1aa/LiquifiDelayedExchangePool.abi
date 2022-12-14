@@ -1,0 +1,892 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenBAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_aIsWETH",
+                "type": "bool"
+            },
+            {
+                "internalType": "address",
+                "name": "_governanceRouter",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalBalance",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "rootKLastTotalSupply",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "orderId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "lastBreakHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "availableBalance",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "flowSpeed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "others",
+                "type": "uint256"
+            }
+        ],
+        "name": "FlowBreakEvent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "packedGovernance",
+                "type": "uint256"
+            }
+        ],
+        "name": "GovernanceApplied",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum LiquidityPool.MintReason",
+                "name": "reason",
+                "type": "uint8"
+            }
+        ],
+        "name": "Mint",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "location",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "invalidStateReason",
+                "type": "uint256"
+            }
+        ],
+        "name": "OperatingInInvalidState",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "orderId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "OrderClaimedEvent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "aIsWETH",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "orderFlags",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "prevByStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "prevByTimeout",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "stopLossAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "period",
+                "type": "uint256"
+            }
+        ],
+        "name": "addOrder",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "name": "allowance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "remaining",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "packedGovernanceFields",
+                "type": "uint256"
+            }
+        ],
+        "name": "applyGovernance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "approve",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "extractETH",
+                "type": "bool"
+            }
+        ],
+        "name": "burn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountB",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "previousBreakHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "breaksHistory",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "claimOrder",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountAOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountBOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "closeOrder",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "orderId",
+                "type": "uint256"
+            }
+        ],
+        "name": "findOrder",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "nextByTimeout",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "prevByTimeout",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "nextByStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "prevByStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "stopLossAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "period",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "timeout",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "flags",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "governanceRouter",
+        "outputs": [
+            {
+                "internalType": "contract GovernanceRouter",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lastBreakHash",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minimumLiquidity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "mint",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "liquidity",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "poolBalances",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "balanceALocked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "poolFlowSpeedA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "balanceBLocked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "poolFlowSpeedB",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalBalanceA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalBalanceB",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "delayedSwapsIncome",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "rootKLastTotalSupply",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "poolQueue",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "firstByTokenAStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastByTokenAStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "firstByTokenBStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastByTokenBStopLoss",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "firstByTimeout",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastByTimeout",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "poolState",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_prevBlockBreakHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "packed",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "notFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastBalanceUpdateTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "nextBreakTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxHistory",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "ordersToClaimCount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "breaksCount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "processDelayedOrders",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "availableBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "delayedSwapsIncome",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "packed",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "extractETH",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountAOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountBOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "externalData",
+                "type": "bytes"
+            }
+        ],
+        "name": "swap",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountAIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountBIn",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "sync",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenA",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenB",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transfer",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

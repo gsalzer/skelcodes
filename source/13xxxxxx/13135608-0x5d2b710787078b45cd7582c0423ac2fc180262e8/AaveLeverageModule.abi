@@ -1,0 +1,841 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract IController",
+                "name": "_controller",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ILendingPoolAddressesProvider",
+                "name": "_lendingPoolAddressesProvider",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "_anySetAllowed",
+                "type": "bool"
+            }
+        ],
+        "name": "AnySetAllowedUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "_added",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract IERC20[]",
+                "name": "_assets",
+                "type": "address[]"
+            }
+        ],
+        "name": "BorrowAssetsUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "_added",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract IERC20[]",
+                "name": "_assets",
+                "type": "address[]"
+            }
+        ],
+        "name": "CollateralAssetsUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IERC20",
+                "name": "_collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IERC20",
+                "name": "_repayAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract IExchangeAdapter",
+                "name": "_exchangeAdapter",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalRedeemAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalRepayAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_protocolFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "LeverageDecreased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IERC20",
+                "name": "_borrowAsset",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IERC20",
+                "name": "_collateralAsset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract IExchangeAdapter",
+                "name": "_exchangeAdapter",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalBorrowAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalReceiveAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_protocolFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "LeverageIncreased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IERC20",
+                "name": "_underlying",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IAToken",
+                "name": "_aToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IVariableDebtToken",
+                "name": "_variableDebtToken",
+                "type": "address"
+            }
+        ],
+        "name": "ReserveTokensUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "_added",
+                "type": "bool"
+            }
+        ],
+        "name": "SetTokenStatusUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "_newBorrowAssets",
+                "type": "address[]"
+            }
+        ],
+        "name": "addBorrowAssets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "_newCollateralAssets",
+                "type": "address[]"
+            }
+        ],
+        "name": "addCollateralAssets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "_underlying",
+                "type": "address"
+            }
+        ],
+        "name": "addUnderlyingToReserveTokensMapping",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "allowedSetTokens",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "anySetAllowed",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "borrowAssetEnabled",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "collateralAssetEnabled",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_setTokenQuantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_component",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isEquity",
+                "type": "bool"
+            }
+        ],
+        "name": "componentIssueHook",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_setTokenQuantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_component",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isEquity",
+                "type": "bool"
+            }
+        ],
+        "name": "componentRedeemHook",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "controller",
+        "outputs": [
+            {
+                "internalType": "contract IController",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_collateralAsset",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_repayAsset",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_redeemQuantityUnits",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minRepayQuantityUnits",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_tradeAdapterName",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_tradeData",
+                "type": "bytes"
+            }
+        ],
+        "name": "delever",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_collateralAsset",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_repayAsset",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_redeemQuantityUnits",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_tradeAdapterName",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_tradeData",
+                "type": "bytes"
+            }
+        ],
+        "name": "deleverToZeroBorrowBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            }
+        ],
+        "name": "getEnabledAssets",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "_collateralAssets",
+                "type": "address[]"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "_borrowAssets",
+                "type": "address[]"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lendingPoolAddressesProvider",
+        "outputs": [
+            {
+                "internalType": "contract ILendingPoolAddressesProvider",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_borrowAsset",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_collateralAsset",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_borrowQuantityUnits",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minReceiveQuantityUnits",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_tradeAdapterName",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_tradeData",
+                "type": "bytes"
+            }
+        ],
+        "name": "lever",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "moduleIssueHook",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "moduleRedeemHook",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "protocolDataProvider",
+        "outputs": [
+            {
+                "internalType": "contract IProtocolDataProvider",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IDebtIssuanceModule",
+                "name": "_debtIssuanceModule",
+                "type": "address"
+            }
+        ],
+        "name": "registerToModule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "_borrowAssets",
+                "type": "address[]"
+            }
+        ],
+        "name": "removeBorrowAssets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "_collateralAssets",
+                "type": "address[]"
+            }
+        ],
+        "name": "removeCollateralAssets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "removeModule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            }
+        ],
+        "name": "sync",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "underlyingToReserveTokens",
+        "outputs": [
+            {
+                "internalType": "contract IAToken",
+                "name": "aToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IVariableDebtToken",
+                "name": "variableDebtToken",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_status",
+                "type": "bool"
+            }
+        ],
+        "name": "updateAllowedSetToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_anySetAllowed",
+                "type": "bool"
+            }
+        ],
+        "name": "updateAnySetAllowed",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

@@ -1,0 +1,1333 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token_address",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_secret_registry",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_settlement_timeout_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_settlement_timeout_max",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_controller",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_channel_participant_deposit_limit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_token_network_deposit_limit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "closing_participant",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "balance_hash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "ChannelClosed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "total_deposit",
+                "type": "uint256"
+            }
+        ],
+        "name": "ChannelNewDeposit",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "participant1",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "participant2",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "settle_timeout",
+                "type": "uint256"
+            }
+        ],
+        "name": "ChannelOpened",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "participant1",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "participant1_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "participant1_locksroot",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "participant2",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "participant2_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "participant2_locksroot",
+                "type": "bytes32"
+            }
+        ],
+        "name": "ChannelSettled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "locksroot",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "unlocked_amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "returned_tokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "ChannelUnlocked",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "total_withdraw",
+                "type": "uint256"
+            }
+        ],
+        "name": "ChannelWithdraw",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "new_value",
+                "type": "bool"
+            }
+        ],
+        "name": "DeprecationSwitch",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "closing_participant",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "balance_hash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "NonClosingBalanceProofUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "chain_id",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "new_controller",
+                "type": "address"
+            }
+        ],
+        "name": "changeController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "channel_counter",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "channel_participant_deposit_limit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "channels",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "settle_block_number",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum TokenNetwork.ChannelState",
+                "name": "state",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "non_closing_participant",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "closing_participant",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "balance_hash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "additional_hash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes",
+                "name": "non_closing_signature",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "closing_signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "closeChannel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "contract_address",
+                "type": "address"
+            }
+        ],
+        "name": "contractExists",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "controller",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "participant",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "total_withdraw",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiration_block",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "participant_signature",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "partner_signature",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenNetwork.WithdrawInput",
+                "name": "data1",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "participant",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "total_withdraw",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiration_block",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "participant_signature",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "partner_signature",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenNetwork.WithdrawInput",
+                "name": "data2",
+                "type": "tuple"
+            }
+        ],
+        "name": "cooperativeSettle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "deprecate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "name": "failsafe_addition",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "name": "failsafe_subtract",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "partner",
+                "type": "address"
+            }
+        ],
+        "name": "getChannelIdentifier",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "participant1",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "participant2",
+                "type": "address"
+            }
+        ],
+        "name": "getChannelInfo",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum TokenNetwork.ChannelState",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "partner",
+                "type": "address"
+            }
+        ],
+        "name": "getChannelParticipantInfo",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "participant1_deposit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant1_withdrawn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant1_transferred",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant1_locked",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant2_transferred",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant2_locked",
+                "type": "uint256"
+            }
+        ],
+        "name": "getMaxPossibleReceivableAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "partner",
+                "type": "address"
+            }
+        ],
+        "name": "getParticipantsHash",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            }
+        ],
+        "name": "getUnlockIdentifier",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "name": "max",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "name": "min",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "participant1",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "participant2",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "settle_timeout",
+                "type": "uint256"
+            }
+        ],
+        "name": "openChannel",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "participant1",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "participant2",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "settle_timeout",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant1_total_deposit",
+                "type": "uint256"
+            }
+        ],
+        "name": "openChannelWithDeposit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "participants_hash_to_channel_identifier",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "removeLimits",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "safety_deprecation_switch",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "secret_registry",
+        "outputs": [
+            {
+                "internalType": "contract SecretRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "total_deposit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "partner",
+                "type": "address"
+            }
+        ],
+        "name": "setTotalDeposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "participant",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "total_withdraw",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expiration_block",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "participant_signature",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "partner_signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "setTotalWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "participant",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "total_withdraw",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expiration_block",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "participant_signature",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "partner_signature",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenNetwork.WithdrawInput",
+                "name": "withdraw_data",
+                "type": "tuple"
+            }
+        ],
+        "name": "setTotalWithdraw2",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "participant1",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant1_transferred_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant1_locked_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "participant1_locksroot",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "participant2",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant2_transferred_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "participant2_locked_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "participant2_locksroot",
+                "type": "bytes32"
+            }
+        ],
+        "name": "settleChannel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "participant",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "transferred_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "locked_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "locksroot",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct TokenNetwork.SettleInput",
+                "name": "participant1_settlement",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "participant",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "transferred_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "locked_amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "locksroot",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct TokenNetwork.SettleInput",
+                "name": "participant2_settlement",
+                "type": "tuple"
+            }
+        ],
+        "name": "settleChannel2",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "settlement_timeout_max",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "settlement_timeout_min",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "signature_prefix",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "token",
+        "outputs": [
+            {
+                "internalType": "contract Token",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "token_network_deposit_limit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "locks",
+                "type": "bytes"
+            }
+        ],
+        "name": "unlock",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "channel_identifier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "closing_participant",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "non_closing_participant",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "balance_hash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "additional_hash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes",
+                "name": "closing_signature",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "non_closing_signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "updateNonClosingBalanceProof",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

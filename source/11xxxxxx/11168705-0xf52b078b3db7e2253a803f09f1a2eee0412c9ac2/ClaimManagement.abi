@@ -1,0 +1,855 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_governance",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_auditor",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_protocolFactory",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "claimIsAccepted",
+                "type": "bool"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "protocol",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "payoutNumerator",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "payoutDenominator",
+                "type": "uint16"
+            }
+        ],
+        "name": "ClaimDecided",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "isForced",
+                "type": "bool"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "filedBy",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "protocol",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint48",
+                "name": "incidentTimestamp",
+                "type": "uint48"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "feePaid",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClaimFiled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "claimIsValid",
+                "type": "bool"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "protocol",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClaimValidated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferCompleted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferInitiated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "allowPartialClaim",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "auditor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "baseClaimFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_nonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_claimIsAccepted",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_payoutNumerator",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_payoutDenominator",
+                "type": "uint16"
+            }
+        ],
+        "name": "decideClaim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeCurrency",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeMultiplier",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_protocolName",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint48",
+                "name": "_incidentTimestamp",
+                "type": "uint48"
+            }
+        ],
+        "name": "fileClaim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "forceClaimFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_protocolName",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint48",
+                "name": "_incidentTimestamp",
+                "type": "uint48"
+            }
+        ],
+        "name": "forceFileClaim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_protocolName",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getAddressFromFactory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_nonce",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAllClaimsByNonce",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "enum IClaimManagement.ClaimState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "filedBy",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "payoutNumerator",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "payoutDenominator",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint48",
+                        "name": "filedTimestamp",
+                        "type": "uint48"
+                    },
+                    {
+                        "internalType": "uint48",
+                        "name": "incidentTimestamp",
+                        "type": "uint48"
+                    },
+                    {
+                        "internalType": "uint48",
+                        "name": "decidedTimestamp",
+                        "type": "uint48"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feePaid",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IClaimManagement.Claim[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_nonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum IClaimManagement.ClaimState",
+                "name": "_state",
+                "type": "uint8"
+            }
+        ],
+        "name": "getAllClaimsByState",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "enum IClaimManagement.ClaimState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "filedBy",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "payoutNumerator",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "payoutDenominator",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint48",
+                        "name": "filedTimestamp",
+                        "type": "uint48"
+                    },
+                    {
+                        "internalType": "uint48",
+                        "name": "incidentTimestamp",
+                        "type": "uint48"
+                    },
+                    {
+                        "internalType": "uint48",
+                        "name": "decidedTimestamp",
+                        "type": "uint48"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feePaid",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IClaimManagement.Claim[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            }
+        ],
+        "name": "getFileClaimWindow",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            }
+        ],
+        "name": "getProtocolClaimFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            }
+        ],
+        "name": "getProtocolNonce",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "governance",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isAuditorVoting",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "maxClaimDecisionWindow",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "protocolClaims",
+        "outputs": [
+            {
+                "internalType": "enum IClaimManagement.ClaimState",
+                "name": "state",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "filedBy",
+                "type": "address"
+            },
+            {
+                "internalType": "uint16",
+                "name": "payoutNumerator",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "payoutDenominator",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint48",
+                "name": "filedTimestamp",
+                "type": "uint48"
+            },
+            {
+                "internalType": "uint48",
+                "name": "incidentTimestamp",
+                "type": "uint48"
+            },
+            {
+                "internalType": "uint48",
+                "name": "decidedTimestamp",
+                "type": "uint48"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feePaid",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "protocolFactory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_auditor",
+                "type": "address"
+            }
+        ],
+        "name": "setAuditor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_baseClaimFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_forceClaimFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_currency",
+                "type": "address"
+            }
+        ],
+        "name": "setFeeAndCurrency",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_multiplier",
+                "type": "uint256"
+            }
+        ],
+        "name": "setFeeMultiplier",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_governance",
+                "type": "address"
+            }
+        ],
+        "name": "setGovernance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_newTimeWindow",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxClaimDecisionWindow",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_allowPartialClaim",
+                "type": "bool"
+            }
+        ],
+        "name": "setPartialClaimStatus",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            }
+        ],
+        "name": "setTreasury",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "treasury",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_protocol",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_nonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_claimIsValid",
+                "type": "bool"
+            }
+        ],
+        "name": "validateClaim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
