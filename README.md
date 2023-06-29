@@ -150,4 +150,4 @@ As an example, the line
 ```
 7323071,81,14,0xd7c2546027141d7d101985f1867a51c993effadb,6791341,170,14,0x3783028ce720304fc8877789e8eecdd2e349117c,CappedSTO
 ```
-expresses that the contract deployed in block `7323071`, transaction `81`, message `14` at the main chain address `0xd7c2546027141d7d101985f1867a51c993effadb` has the same skeleton as the contract deployed in block `6791341`, transaction `170`, message `14` at address `0x3783028ce720304fc8877789e8eecdd2e349117c`. The latter contract is included in this repository. The name of the contract in source at Etherscan is `CappedSTO`.
+expresses that the contract deployed in block `7323071`, transaction `81`, message `14` at the main chain address `0xd7c2546027141d7d101985f1867a51c993effadb` has the same skeleton as the contract deployed in block `6791341`, transaction `170`, message `14` at address `0x3783028ce720304fc8877789e8eecdd2e349117c`. The latter contract is included in this repository. The name of the contract in source at Etherscan is `CappedSTO`. The skelcode corresponding to the contract is named `6791341-0x3783028ce720304fc8877789e8eecdd2e349117c` in this repository.
