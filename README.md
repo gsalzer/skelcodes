@@ -1,13 +1,13 @@
 # SkelCodes
 
 This repository contains the deployment code (contract creation code) as well
-as the runtime code of contracts, self-destructed or not, from Ethereum's main
-chain, *one for each type of skeleton*. Moreover, the folder *source* contains
-the ABIs of those contracts, where the source code if available from
-[Etherscan](etherscan.io). By the way the contracts were selected, the
-collection of **248,328** bytecodes faithfully represents, in most respects,
-the **45 million** contracts successfully deployed up to block **14,000,000**
-(see below for details of the selection process).
+as the deployed code (runtime code) of contracts, self-destructed or not, from
+Ethereum's main chain, *one for each type of skeleton*. Moreover, the folder
+*source* contains the ABIs of those contracts, where the source code if
+available from [Etherscan](etherscan.io). By the way the contracts were
+selected, the collection of **248,328** bytecodes faithfully represents, in
+most respects, the **45 million** contracts successfully deployed up to block
+**14,000,000** (see below for details of the selection process).
 
 ## Contents of the repository
 
@@ -44,13 +44,15 @@ range of 1,000,000 blocks.
 | 13xxxxxx  |    35,947  |           24,357 |
 | total     |   248,328  |          115,594 |
 
-The file `info.csv` contains supplementary data for each bytecode (see below
-for details).  The scripts `runtime/database2csv.sql` and
-`runtime/csv2files.bash` folder document the extraction process. They are not
-overly useful if you don't have access to the database they refer to.
-Etherscan provides source code with additional information, packed in a `json`
-file. The script `source/json2sol.py` can be used to extract the source code
-itself.
+The file `info.csv` contains supplementary data for each bytecode, whereas
+`contract2skelcode.csv.zip` maps the deployed contracts to the skelcodes in
+this repository. See below for details.
+
+The scripts `runtime/database2csv.sql` and `runtime/csv2files.bash` folder
+document the extraction process. They are not overly useful if you don't have
+access to the database they refer to.  Etherscan provides source code with
+additional information, packed in a `json` file. The script
+`source/json2sol.py` can be used to extract the source code from such a file.
 
 ## Selection of bytecodes
 
@@ -93,6 +95,8 @@ To obtain additional information for an ADDRESS from [Etherscan](https://ethersc
 
 ## Supplementary data
 
+### info.csv
+
 The file `info.csv` contains the following supplementary data for each bytecode
 in the repository:
 
@@ -126,3 +130,24 @@ and `5` deployments. Further information on this bytecode can be found at
 The last three columns roughly indicate the complexity of the bytecode:
 Its total length is `235` bytes, whereas the length of the first code segment (the part that is actually executed) consists of just `182` bytes.
 The code implements `3` methods (functions in Solidity).
+
+### contract2skelcode.csv
+
+The file `contract2skelcode.csv` contains one line for each contract of the
+main chain (up to block 14,000,000). For size reasons, it has been split into
+16 files based on the first byte of the deployment address. It maps each
+deployed contract to the corresponding skelcode in this repository.  The file
+has the following fields.
+
+   - The number of the *block*, where the contract has been deployed.
+   - The number of the transaction, *tx*, within the block, where the contract has been deployed.
+   - The number of the message, *msg*, within the transaction, where the contract has been deployed.
+   - The *address*, at which the contract has been deployed.
+   - The fields *skel_block*, *skel_tx*, *skel_msg*, *skel_address* are the same information for the corresponding skelcode, which carries the name *skel_block*`-`*skel_address* in this repository.
+   - If Etherscan has source code for the contract, the field `contractname` gives the name of the contract within the source files.
+
+As an example, the line
+```
+7323071,81,14,0xd7c2546027141d7d101985f1867a51c993effadb,6791341,170,14,0x3783028ce720304fc8877789e8eecdd2e349117c,CappedSTO
+```
+expresses that the contract deployed in block `7323071`, transaction `81`, message `14` at the main chain address `0xd7c2546027141d7d101985f1867a51c993effadb` has the same skeleton as the contract deployed in block `6791341`, transaction `170`, message `14` at address `0x3783028ce720304fc8877789e8eecdd2e349117c`. The latter contract is included in this repository. The name of the contract in source at Etherscan is `CappedSTO`.
