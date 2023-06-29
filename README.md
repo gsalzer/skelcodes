@@ -1,8 +1,9 @@
 # SkelCodes
 
-This repository contains the source, deployment and runtime code of contracts,
-self-destructed or not, from Ethereum's main chain, *one for each type of
-skeleton*; the source code is included if available from
+This repository contains the deployment code (contract creation code) as well
+as the runtime code of contracts, self-destructed or not, from Ethereum's main
+chain, *one for each type of skeleton*. Moreover, the folder *source* contains
+the ABIs of those contracts, where the source code if available from
 [Etherscan](etherscan.io). By the way the contracts were selected, the
 collection of **248,328** bytecodes faithfully represents, in most respects,
 the **45 million** contracts successfully deployed up to block **14,000,000**
@@ -11,8 +12,10 @@ the **45 million** contracts successfully deployed up to block **14,000,000**
 ## Contents of the repository
 
 The repository contains three directories, *source*, *deployment* and
-*runtime*, of identical structure, containing the source, deployment and
-runtime codes of the contracts, respectively.
+*runtime*, of identical structure, containing the ABIs, deployment and runtime
+codes of the contracts, respectively. The folder name *source* indicates that
+for the addresses in this folder, the source code can be obtained from
+[Etherscan](etherscan.io).
 
 The codes are labeled `blockid-address.hex`. `address` is one of the addresses,
 where the code has been deployed on Ethereum's main chain, and `blockid` is the
@@ -23,7 +26,7 @@ codes have been successively deployed at the same address.
 The codes are divided up into directories, with each directory covering the
 range of 1,000,000 blocks.
 
-| directory |    #codes  | verified sources |
+| directory |    #codes  | with source      |
 | --------- | ---------- |------------------|
 |  0xxxxxx  |     2,542  |               26 |
 |  1xxxxxx  |     3,305  |              336 |
@@ -46,7 +49,7 @@ for details).  The scripts `runtime/database2csv.sql` and
 `runtime/csv2files.bash` folder document the extraction process. They are not
 overly useful if you don't have access to the database they refer to.
 Etherscan provides source code with additional information, packed in a `json`
-file. The script `source/json2sol.py` was used to extract the source code
+file. The script `source/json2sol.py` can be used to extract the source code
 itself.
 
 ## Selection of bytecodes
