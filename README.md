@@ -111,13 +111,14 @@ in the repository:
    - the *length of the bytecode*
    - the *length of the first code segment* of the bytecode
    - the *number of entry points* (contract methods)
+   - the version of *solc* used to compile the contract (obtained from the meta data in the bytecode or from [Etherscan](https://etherscan.io), if it has the Solidity source of the contract)
 
 The fields *last block*, *number of different bytecodes* and *number of deployments* take only
 deployments before block 14,000,000 into account.
 
  As an example, the line
 ```
-10018484-0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8.hex,10018484,181,0,0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8,10018484,10785507,3,5,235,182,3
+10018484-0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8.hex,10018484,181,0,0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8,10018484,10785507,3,5,235,182,3,0.6.7
 ```
 tells that the bytecode in file
 `10018484-0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8.hex` (directory
@@ -127,7 +128,7 @@ the same skeleton as this bytecode were deployed between the
 blocks `10018484` and `10785507`. In total, there are `3` different bytecodes
 and `5` deployments. Further information on this bytecode can be found at
 `https://etherscan.io/address/0xa1e55c7c255d23dd1fdd6248e64b6355685ae8c8`.
-The last three columns roughly indicate the complexity of the bytecode:
+Columns 10, 11 and 12 roughly indicate the complexity of the bytecode:
 Its total length is `235` bytes, whereas the length of the first code segment (the part that is actually executed) consists of just `182` bytes.
 The code implements `3` methods (functions in Solidity).
 
