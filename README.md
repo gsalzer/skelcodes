@@ -90,8 +90,8 @@ additional information, packed in a `json` file. The script
    codes are uploaded every day.
 
 Currently 111,943 of the 241,292 codes (46%) possess a verified source.
-To obtain additional information for an `address` from [Etherscan](https://etherscan.io), use the link
-    https://etherscan.io/address/0x`address`#code
+To obtain additional information for an ADDRESS from [Etherscan](https://etherscan.io), use the link
+    https://etherscan.io/address/0xADDRESS#code
 
 ## Supplementary data
 
