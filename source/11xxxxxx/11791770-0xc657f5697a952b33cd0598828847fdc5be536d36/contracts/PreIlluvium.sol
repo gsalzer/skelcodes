@@ -1,0 +1,79 @@
+//SPDX-License-Identifier: MIT
+pragma solidity 0.7.4;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
+
+contract PreIlluvium is ERC20("Pre Illuvium Token", "preILV"), Ownable {
+
+    using SafeMath for uint;
+    
+    constructor(uint supply) {
+        _mint(msg.sender, supply);
+    }
+
+     /**
+     * @dev Mints `amount` tokens to `to`
+     *
+     * See {ERC20-_mint}.
+     *
+     * Requirements:
+     *
+     * - only the owner can call this function
+     */
+    function mint(address to, uint amount) external onlyOwner {
+        _mint(to, amount);
+    }
+
+     /**
+     * @dev Destroys `amount` tokens from the caller.
+     *
+     * See {ERC20-_burn}.
+     */
+    function burn(uint amount) external {
+        _burn(_msgSender(), amount);
+    }
+
+    /**
+     * @dev Destroys `amount` tokens from `account`, deducting from the caller's
+     * allowance.
+     *
+     * See {ERC20-_burn} and {ERC20-allowance}.
+     *
+     * Requirements:
+     *
+     * - the caller must have allowance for ``accounts``'s tokens of at least
+     * `amount`.
+     */
+    function burnFrom(address account, uint amount) external {
+        require(allowance(account, _msgSender()) >= amount, "ERC20: burn amount exceeds allowance");
+        _approve(account, _msgSender(), allowance(account, _msgSender()).sub(amount));
+        _burn(account, amount);
+    }
+
+    /**
+     * @dev Overrides and calls super {ERC20-transfer}
+     *
+     * See {ERC20-transfer}
+     *
+     * Requirements:
+     *
+     * - `recipient` cannot be `address(this)`
+     */
+    function transfer(address recipient, uint amount) 
+        public 
+        onlyOwner
+        override 
+        returns (bool) 
+    {
+        require(recipient != address(this), "PreIlluvium: Invalid recipient");
+        super.transfer(recipient, amount);
+    }
+
+    function destroy() external onlyOwner {
+        selfdestruct(msg.sender);
+    }
+}
+
